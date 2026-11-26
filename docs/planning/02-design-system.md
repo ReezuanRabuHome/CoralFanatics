@@ -31,11 +31,13 @@ Two **surface modes**:
 --ink-600:   #5F6E75;  /* Muted text (AA-adjusted) */
 --ink-400:   #718087;  /* Decorative / disabled only */
 
---gold-500:  #DCA923;  /* Brand gold: on dark only */
---gold-700:  #8C6A12;  /* Gold text on light */
+--gold-300:  #F4DD69;  /* Logo highlight: hover on dark */
+--gold-500:  #EBC455;  /* Brand gold (sampled from logo): on dark only */
+--gold-600:  #B3904C;  /* Logo shadow: hairlines on dark, decorative */
+--gold-700:  #84661A;  /* Gold ink: text on light */
 --gold-100:  #F7EDCF;  /* Gold tint background */
 
---orange-500:#F07822;  /* Clownfish: non-text accents */
+--orange-500:#E2762E;  /* Clownfish (sampled from logo): non-text accents */
 --orange-700:#B5520E;  /* Orange text on light */
 
 --green-600: #2F7D5B;  --green-100: #E3F1EA;
@@ -43,7 +45,7 @@ Two **surface modes**:
 --red-600:   #B4412F;  --red-100:   #F8E3DF;
 --blue-600:  #2A6F8F;  --blue-100:  #E0EEF4;
 ```
-*(All brand values are provisional until the logo is sampled; see Deliverable 1.)*
+*(Gold and orange sampled from the supplied logo, 26 Nov 2026; see Deliverable 1 §4.)*
 
 ### 1.2 Semantic tokens
 
@@ -155,13 +157,14 @@ Label style: `label` scaled to 15px, weight 600, sentence case.
 ## 6. Navigation
 
 **Desktop header** (height 72px):
-`[Logo lockup]   New Arrivals  Corals  Marine Life  Equipment  Our Story     [Search] [Account] [Bag (n)]`
+`[Badge]   New Arrivals  Corals  Marine Life  Equipment  Our Story     [Search] [Account] [Bag (n)]`
 
-- On the homepage hero: transparent over the image with a white logo variant and white text, and a subtle top gradient (ocean-900 at 40% to transparent, 160px) **only to protect legibility**. Not decorative.
-- After scrolling 80px: becomes pearl-100 at 92% with backdrop blur, ink text, full-colour logo, and a 1px border underneath.
+- **Logo in nav:** the full circular badge at 52px (desktop) / 40px (mobile). The badge can't be split into icon + wordmark, so there is no horizontal lockup (see Brand Audit §6).
+- On the homepage hero: transparent over the image with the transparent-background badge and white text, and a subtle top gradient (ocean-900 at 40% to transparent, 160px) **only to protect legibility**. Not decorative.
+- After scrolling 80px: becomes pearl-100 at 92% with backdrop blur, ink text, the same badge, and a 1px border underneath.
 - **Mega-menu** (Corals / Marine Life / Equipment): a single-row panel with sub-categories as text links on the left and one real photo tile ("New this week: 14 SPS") on the right. Opens on hover with a 120ms intent delay, or on click/keyboard.
 
-**Mobile header** (56px): `[☰] [Logo mark + wordmark] [Search] [Bag]`. The menu is a full-height sheet with large category rows, then Account, Visit the shop, and Contact.
+**Mobile header** (56px): `[☰] [Badge 40px] [Search] [Bag]`. The menu is a full-height sheet with large category rows, then Account, Visit the shop, and Contact.
 
 **Recommendation:** replace "Discover" with **"New Arrivals"**. Reef customers check for new drops repeatedly; this is the highest-intent navigation item for a livestock shop. "Discover" has no clear destination in v1 (there is no editorial/guides section yet). If you prefer to keep "Discover", it can point to the homepage collections.
 

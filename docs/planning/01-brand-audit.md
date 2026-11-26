@@ -1,128 +1,113 @@
 # Deliverable 1 — Brand Audit
 
-> **Status: PROVISIONAL.** No logo file or shop photographs were present in the repository when this audit was written (the repository was empty). Everything under "Observed" comes from the written description in the project brief, not from inspecting the artwork. All colour values are **unverified** until the real logo is sampled.
->
-> **Action required:** place the logo source files in `assets/brand/` (see `assets/README.md`). The audit will then be re-run: colours sampled from the artwork, contrast re-checked and this document updated.
+> **Status: v2, based on the supplied logo** (`assets/brand/logo-source-raster.jpg`, received 26 Nov 2026).
+> Colours were **sampled programmatically** from the file (pixel clustering by hue). Contrast ratios were **calculated** (WCAG 2.x). Shop photography has **not** been supplied yet, so the photography section is still a recommendation.
 
 ---
 
-## 1. What is known vs. what is recommended
+## 1. The supplied file
 
-| Topic | Observed (from brief) | Unknown / must verify | Recommendation |
-|---|---|---|---|
-| Mark | Clownfish illustration with coral/reef elements | Line style (flat, outlined, gradient, detailed?), whether the fish works small | Use the full illustrated logo only at medium/large sizes; derive a simplified mark for small sizes (see §4) |
-| Wordmark | Gold lettering, script style | Exact letterforms, whether wordmark and mark can be separated cleanly | Keep the script **exclusive to the logo**; never set site text in script |
-| Colour | Orange and yellow tones; gold lettering | Exact hex values, gradients, outlines, background colour of the artwork | Sample from the vector file; map to tokens in Deliverable 2 |
-| Tone | Specialist reef shop, enthusiast audience ("Fanatics") | Existing tone of voice on social media | Calm, knowledgeable, specimen-focused: "collector's gallery", not "pet shop sale" |
-| Formats | — | Is there a vector (AI/SVG/PDF) master, or only raster? | A vector master is essential. If only a raster exists, budget for a faithful vector redraw (redraw only, **no redesign**) |
-
----
-
-## 2. Brand characteristics (interpretation)
-
-From the elements described, the brand already carries:
-
-1. **Warmth and character.** A clownfish is friendly and instantly recognised, and orange/yellow is a warm palette.
-2. **Craft.** Gold script lettering reads as boutique and personal rather than corporate.
-3. **Subject authenticity.** Reef and coral elements say clearly that this is a specialist, not a general pet store.
-
-**Brand tension to manage.** A friendly illustrated clownfish can tip into "children's aquarium" if it is surrounded by bright colour. The Hybrid Luxury direction fixes this with context: the logo stays exactly as it is, and the website around it is restrained (deep ocean, warm pearl, generous space, real photography). The logo then reads as a heritage mark inside a premium frame. **The logo should be the warmest, most colourful element on most screens. The photography is the only thing that competes with it.**
-
----
-
-## 3. Colour
-
-### 3.1 Approximate logo colours — TO BE SAMPLED
-
-The brief provides these provisional values. They are consistent with the description ("gold lettering, orange and yellow tones"), but **I have not confirmed them against the artwork**:
-
-| Role | Provisional | Verify against logo |
-|---|---|---|
-| Logo gold (lettering) | `#DCA923` | Sample the flat area of the lettering; the logo may use a gradient, in which case take the mid-tone for UI use |
-| Clownfish orange | `#F07822` | Sample the fish body |
-| Clownfish white bands / outlines | not specified | Likely white plus a dark outline; the dark outline colour may make a better "brand dark" than the provisional ocean |
-| Yellow | not specified | The brief mentions yellow tones; may be a highlight in the gold |
-
-### 3.2 Recommended supporting palette
-
-Adopted from the brief, with accessibility adjustments that I **calculated** (WCAG 2.x relative luminance):
-
-| Token | Hex | Use | Contrast notes |
-|---|---|---|---|
-| Deep ocean | `#09212C` | Cinematic sections, footer, primary buttons on light | White text ≈ 15.8:1 ✅ |
-| Secondary ocean | `#102B38` | Raised surfaces on dark | — |
-| Warm pearl | `#F5F3ED` | Primary light background for shopping pages | — |
-| Soft white | `#FFFFFF` | Cards, forms, admin surfaces | — |
-| Gold | `#DCA923` | Logo, fine accents **on dark only** | On deep ocean ≈ 7.7:1 ✅. On white ≈ 2.1:1 ❌, so never use for text on light |
-| Gold (text on light) — *new* | `#8C6A12` | Gold-toned text/icons on light backgrounds | On white ≈ 5.0:1 ✅ |
-| Clownfish orange | `#F07822` | Rare highlight (e.g. "New arrival" dot, sale) | On white ≈ 2.8:1 ❌, so use for non-text only |
-| Orange (text on light) — *new* | `#B5520E` | When orange must be text | On white ≈ 4.9:1 ✅ |
-| Primary text | `#17272E` | Body and headings on light | — |
-| Muted text — *adjusted* | `#5F6E75` (was `#718087`) | Secondary text | The original `#718087` is ≈ 4.1:1 on white and **fails AA** for body text. `#5F6E75` ≈ 5.3:1 on white, ≈ 4.8:1 on pearl ✅. Keep `#718087` for decorative/disabled use only |
-| Light border | `#E2E7E7` | Dividers, card borders | — |
-
-**Usage ratio guideline (per screen):**
-- Shopping pages: ~85% pearl/white, ~12% ink/ocean, ≤3% gold/orange.
-- Cinematic sections: ~70% photography, ~25% deep ocean, ≤5% gold.
-
----
-
-## 4. Logo variations needed
-
-None of these exist yet as far as I know. All must be **derived from the existing logo, not redesigned**.
-
-| # | Variation | Purpose | Notes |
-|---|---|---|---|
-| 1 | Primary full-colour logo (master) | Footer, Our Story, packaging | Vector master (SVG + PDF) |
-| 2 | Horizontal lockup | Desktop navigation bar (height ~32–40px) | Mark left, wordmark right, if the artwork allows separation |
-| 3 | Mark only (clownfish) | Mobile nav, favicon, social avatars, admin | May need a simplified version: fewer details, thicker lines for ≤32px |
-| 4 | Reversed version for dark backgrounds | Hero overlay, footer | Check that outlines don't vanish on `#09212C`; may need a thin light keyline |
-| 5 | Single-colour gold | Watermark-free premium usage: invoices, receipts, emails | Flat `#DCA923` |
-| 6 | Single-colour dark | Printed labels, fax-style receipts, specimen labels | Flat `#17272E` |
-| 7 | Favicon set | Browser, iOS, Android | 16/32/48 ICO, 180 apple-touch, 192/512 PNG, SVG favicon |
-| 8 | Open Graph image template | Social sharing | 1200×630 with logo over a real reef photograph |
-
-Clear-space rule (proposed): minimum clear space = the height of the clownfish's eye ×4, or 0.25× logo height. Finalise once the artwork is seen.
-
-Minimum sizes (proposed): full logo ≥ 120px wide on screen; mark-only ≥ 24px.
-
----
-
-## 5. Typography direction
-
-| Role | Recommendation | Rationale |
-|---|---|---|
-| Display / headings | **Manrope** (600–700) | Geometric-humanist. Large sizes feel confident and modern without looking corporate, and it sits well next to a script logo because it does not compete |
-| Body / UI | **Inter** (400–600) | Excellent legibility at small sizes; tabular numerals for prices and specimen IDs |
-| Data / IDs | Inter with `font-variant-numeric: tabular-nums`; optionally **JetBrains Mono** for specimen IDs in admin only | Specimen IDs such as `CF-SPS-0142` must be easy to read aloud and match to tank labels |
-| Logo script | **Logo only** | Never used for headings or UI |
-
-Both fonts are free (SIL Open Font License) and will be **self-hosted** via `next/font`. That means no Google Fonts runtime dependency and no subscription.
-
-Alternative (if Manrope feels too soft once seen next to the real logo): **Satoshi** or **General Sans** (free from Fontshare) for display. I'll decide after a side-by-side mock with the real logo.
-
----
-
-## 6. Photography style
-
-Full technical spec: [`photography-spec.md`](./photography-spec.md).
-
-| Category | Style direction |
+| Property | Observed |
 |---|---|
-| Editorial / hero | Wide, immersive reef-tank or display shots; dark negative space for overlaid type; natural colour (no oversaturation); calm composition with one focal point |
-| Individual coral specimens | **Top-down, consistent angle, consistent lighting, neutral dark background**, scale reference in a secondary image. This is the "museum catalogue" look that makes each frag feel collectible |
-| Fish | Side profile in a photo tank with a plain dark or neutral background; sharp eye |
-| Invertebrates | Close, detail-focused |
-| Dry goods | Clean, evenly lit, on white or pearl seamless; consistent framing |
-| Shop / team | Documentary, natural light, real moments. No posed corporate shots |
+| Format | JPEG, 1290 × 1276 px, white background, no transparency |
+| Artwork area | ≈ 920 × 915 px of the canvas (generous white margin, larger at the bottom) |
+| Vector master | **Not supplied.** Only this raster exists in the repository |
+| Rendering style | Gold elements rendered as **3D metallic/embossed** (highlights, bevels and shadows), not flat colour. The clownfish is **detailed and photo-realistic** with soft shading and a light grey halo outline |
 
-**Colour honesty statement (recommended to display on coral pages):** *"Photographed under reef lighting. Colours may vary with your lighting and display."* This protects the shop and builds trust.
+**Implications**
+- The raster is good enough for on-screen use up to ~450px wide (at 2× density). It is **not** good enough for print, signage or very small sizes.
+- On dark backgrounds the white background must be removed. I produced **interim** derived files automatically (see §6). They are fine for the prototype, but a clean production version needs a **vector redraw of the same design** (a faithful redraw, no redesign).
 
----
+## 2. What the logo contains (observed)
 
-## 7. Items I need from you
+1. **Circular frame:** a thin gold arc forming an *open* circle (it breaks at the lower left and is interrupted by the script on the right), with a short separate arc beneath "Fanatics".
+2. **Clownfish:** orange body, three white bands with black edging, swimming right, positioned in the upper centre. It is the only non-gold element.
+3. **Coral:** a gold staghorn/finger coral at the upper left and a fine gold branching (gorgonian/sea-fan-like) coral at the upper right.
+4. **Bubbles:** three metallic gold bubbles above the fish.
+5. **Wordmark:** "Coral" (large) above "Fanatics" (smaller), in a **flowing brush script** with long swashes (the "l" of Coral rises into the frame; the "s" of Fanatics trails right beyond the circle).
 
-1. Logo in the best available format (AI/EPS/SVG/PDF preferred; else the highest-resolution PNG).
-2. Any existing brand guidelines, and the colour codes used by your printer or signage maker.
-3. Links to the shop's social accounts (to align tone of voice; I won't copy content without your approval).
-4. 20–40 representative photographs (see the photography spec for the shot list).
+There is no tagline, no blue, and no secondary typeface in the logo.
+
+## 3. Brand characteristics
+
+| Observed | Interpretation |
+|---|---|
+| Metallic gold dominates (~85% of coloured pixels) | Premium, "trophy/collector" feel. Gold is the brand's true primary colour |
+| Single realistic clownfish in full colour | Warmth and approachability; the fish is the focal point and the most recognisable element |
+| Script lettering with expressive swashes | Personal, crafted, boutique |
+| Circular badge composition | Reads as a seal/emblem, which suits a specialist shop. It is a *badge*, not a horizontal logo |
+
+**Brand tension (confirmed):** the metallic gold and realistic fish are rich and ornamental. If the website were also ornamental, the result would look busy. The approved Hybrid Luxury direction (restrained typography, calm surfaces, real photography) is the right counterweight. **The logo is the only ornamental element on any page.**
+
+## 4. Colours
+
+### 4.1 Sampled from the logo
+
+| Element | Sampled range | Representative | Notes |
+|---|---|---|---|
+| Gold, highlight | `#F4DD69` – `#FAE673` | `#F4DD69` | Specular highlights |
+| **Gold, mid-tone** | median of ≈185k gold pixels | **`#EBC455`** (median `#EFCA57`) | Use as the flat brand gold |
+| Gold, shadow | `#B3904C` – `#D1B54A` | `#B3904C` | Bevel shadows |
+| **Clownfish orange** | `#C45C29` – `#E78932` | **`#E2762E`** (median `#DE7031`) | Very close to the provisional `#F07822`; slightly deeper |
+| Fish outline / dark | `#0D0503` – `#241A18` | `#1A0F0D` | Warm brown-black |
+| Fish bands | near white | `#FFFFFF` | — |
+
+### 4.2 What changed from the provisional palette
+
+| Provisional | Finding | Decision |
+|---|---|---|
+| Gold `#DCA923` | The logo's gold is **lighter and yellower** (≈ `#EBC455`). `#DCA923` is more orange and saturated than anything in the logo | **Replace** with `#EBC455` |
+| Orange `#F07822` | The logo's orange is ≈ `#E2762E` | **Adjust** to `#E2762E` |
+| Ocean blues | **Not present in the logo.** They are a supporting choice to frame the gold, not a logo colour | Keep, as approved |
+
+### 4.3 Final palette (approved recommendations + sampled values)
+
+| Token | Hex | Role | Contrast (calculated) |
+|---|---|---|---|
+| Deep ocean | `#09212C` | Cinematic backgrounds, primary buttons on light | White text 15.8:1 |
+| Secondary ocean | `#102B38` | Raised dark surfaces | — |
+| Warm pearl | `#F5F3ED` | Shopping page background | — |
+| Soft white | `#FFFFFF` | Cards, forms, admin | — |
+| **Brand gold** | **`#EBC455`** | Fine accents and gold UI **on dark only** | On ocean **9.9:1** ✅ · on white 1.7:1 ❌ |
+| Gold highlight | `#F4DD69` | Rare: hover state of gold on dark | On ocean 12.2:1 |
+| Gold shadow | `#B3904C` | Hairlines/borders on dark, decorative only | On ocean 5.5:1 |
+| **Gold ink** (text on light) | **`#84661A`** | Gold-toned text/icons on pearl or white | White 5.4:1 ✅ · pearl 4.9:1 ✅ |
+| **Clownfish orange** | **`#E2762E`** | Non-text accents (e.g. "New" dot) | White 3.1:1 (non-text OK) · ocean 5.4:1 |
+| Orange ink | `#B5520E` | Orange text on light | White 5.0:1 ✅ · pearl 4.5:1 ✅ |
+| Primary text | `#17272E` | Body text | White 15.4:1 |
+| Muted text | `#5F6E75` | Secondary text | White 5.3:1 · pearl 4.8:1 ✅ |
+| Light border | `#E2E7E7` | Dividers | — |
+
+The ratio guidance is unchanged: gold and orange together stay at ≤ 3–5% of any screen.
+
+## 5. Typography
+
+Unchanged and confirmed. **Manrope** (display) and **Inter** (text) contrast cleanly with the brush script. A geometric sans next to an expressive script is a classic, legible pairing, and neither competes with the logo. The script stays exclusive to the logo.
+
+## 6. Logo variations
+
+| # | Variation | Status | File |
+|---|---|---|---|
+| 1 | Original raster (source of truth) | ✅ Supplied | `assets/brand/logo-source-raster.jpg` |
+| 2 | Full badge, transparent background (for dark sections) | 🟡 **Interim**, derived automatically. Minor edge artifacts around the fish's white bands; acceptable for the prototype | `assets/brand/logo-transparent.png` |
+| 3 | Clownfish mark only (favicon, mobile nav, social avatar, admin) | 🟡 **Interim**, extracted from the badge | `assets/brand/mark-clownfish.png` |
+| 4 | Vector master (SVG/PDF) of the full badge | ❌ Needed for production and print | — |
+| 5 | **Flat** gold version (no metallic effect) | ❌ Recommended: the metallic effect turns muddy below ~80px and can't be printed in one ink | — |
+| 6 | Single-colour dark (`#17272E`) and white versions | ❌ For labels, receipts and engraving | — |
+| 7 | Favicon set (from the clownfish mark) | 🟡 Generated in Phase 1 from #3 | — |
+
+**Horizontal lockup.** Because the logo is a circular badge with the wordmark inside the circle, it **cannot be split** into an icon + wordmark without redesign, so I won't do that. The navigation uses the **full badge at 48–56px height**. At that size the gold circle and orange fish read clearly, but the script does not. The script reads legibly from ~160px wide, which is where the badge appears large: hero (optional), footer, Our Story, emails and packing slips.
+
+**Minimum sizes (measured from the artwork):** full badge ≥ 160px wide for the script to be legible; ≥ 40px as a recognisable emblem; below 40px use the clownfish mark.
+
+**Clear space:** ≥ 15% of the badge diameter on all sides.
+
+**Recommendation (needs a designer, not urgent for the prototype):** commission a faithful vector redraw (variations 4–6). This is a one-off cost, typically quoted per job. I'll flag it again before launch.
+
+## 7. Photography style
+
+Unchanged; see [`photography-spec.md`](./photography-spec.md). One addition from the logo: the logo's gold is warm and yellow, so **hero photography with warm or neutral light** (not deep actinic blue) will harmonise better around it. Coral specimen photos must still show true reef-light colour; this note applies to editorial and hero images only.
+
+## 8. Still needed from the shop
+- Vector logo, if one exists (ask whoever designed it), or approval to commission a redraw.
+- Shop photography (photo shoot / shot list), which is **placeholder** for now.

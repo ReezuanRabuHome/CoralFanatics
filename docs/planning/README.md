@@ -1,11 +1,11 @@
 # Coral Fanatics — Design & Architecture Plan
 
-**Status:** awaiting approval. **No implementation has started.**
+**Status:** recommendations **approved** (26 Nov 2026). Logo received and brand audit updated. Open business questions are deferred and tracked as placeholders in [placeholders.md](./placeholders.md). Next: Phase 1 visual prototype.
 **Date:** 26 Nov 2026
 
 | # | Deliverable | File |
 |---|---|---|
-| 1 | Brand audit (provisional: logo not yet supplied) | [01-brand-audit.md](./01-brand-audit.md) |
+| 1 | Brand audit (v2: based on the supplied logo) | [01-brand-audit.md](./01-brand-audit.md) |
 | — | Photography specification | [photography-spec.md](./photography-spec.md) |
 | 2 | Visual design system | [02-design-system.md](./02-design-system.md) |
 | 3 | Homepage wireframe | [03-homepage-wireframe.md](./03-homepage-wireframe.md) |
@@ -28,7 +28,7 @@
 5. **"Mark sold in store"** is a one-tap admin action. In-store sales are the most likely real-world source of double-selling.
 6. **Phone-first specimen entry** (photo, species, price, publish in about 60 seconds) plus printable QR labels for the frag rack.
 7. **Fish and invertebrates default to quantity-based** inventory (with a "Representative photo" label where it applies). Showpiece animals can still be listed as unique specimens.
-8. **Accessibility corrections to the provisional palette:** muted text darkened to `#5F6E75` (the original fails WCAG AA); gold `#DCA923` and orange `#F07822` used **only on dark backgrounds or as non-text accents**, with darker text variants for light backgrounds.
+8. **Palette, sampled from the real logo:** brand gold `#EBC455` (replaces `#DCA923`), clownfish orange `#E2762E`; gold and orange used **only on dark backgrounds or as non-text accents**, with darker ink variants (`#84661A`, `#B5520E`) for text on light. Muted text darkened to `#5F6E75` (the original fails WCAG AA).
 9. **Typography:** Manrope (display) and Inter (text), self-hosted.
 10. **Stack unchanged.** Additions are free libraries only (zod, sharp, pg-boss, react-email, vitest, playwright). Postgres-backed jobs (no Redis), Postgres search (no Algolia), and pre-generated images (no image SaaS).
 11. **One image, two processes** (`web` + `worker`) on one 2 GB Singapore droplet. Estimated **≈ S$18–32/month**, subject to price verification at purchase. Docker images are built in GitHub Actions, never on the server.
