@@ -1,17 +1,26 @@
 import Link from "next/link";
-import { Badge } from "@/components/brand/Badge";
 import { store } from "@/config/placeholders";
 
 const cols = [
   {
     title: "Shop",
     links: [
-      ["New arrivals", "/new-arrivals"],
-      ["SPS corals", "/corals/sps"],
-      ["LPS corals", "/corals/lps"],
+      ["New Arrivals", "/new-arrivals"],
+      ["SPS Corals", "/corals/sps"],
+      ["LPS Corals", "/corals/lps"],
       ["Mushrooms", "/corals/mushrooms"],
-      ["Marine fish", "/marine-life/fish"],
+    ],
+  },
+  {
+    title: "Marine Life",
+    links: [
+      ["Marine Fish", "/marine-life/fish"],
       ["Invertebrates", "/marine-life/invertebrates"],
+    ],
+  },
+  {
+    title: "Equipment",
+    links: [
       ["Equipment", "/equipment"],
       ["Additives", "/additives"],
     ],
@@ -19,60 +28,50 @@ const cols = [
   {
     title: "Help",
     links: [
-      ["Collection & delivery", "/policies/delivery"],
-      ["Livestock policy", "/policies/livestock"],
-      ["Order lookup", "/order-lookup"],
-      ["Contact", "/#visit"],
+      ["Collection & Delivery", "/policies/delivery"],
+      ["Livestock Policy", "/policies/livestock"],
+      ["Order Status", "/order-lookup"],
+      ["Contact Us", "/#visit"],
     ],
   },
 ] as const;
 
+/** Light, compact footer: small type, hairline dividers. */
 export function Footer() {
   return (
-    <footer className="mode-ocean bg-ocean-950 text-pearl-100">
-      <div className="container-wide grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_1.2fr] lg:py-24">
-        <div className="flex flex-col items-start gap-5">
-          <Badge size={132} />
-          <p className="max-w-xs text-sm text-ocean-300">Exceptional corals, marine life and reef essentials, in Singapore.</p>
-        </div>
-        {cols.map((c) => (
-          <div key={c.title}>
-            <h2 className="t-eyebrow mb-5 text-gold-500">{c.title}</h2>
-            <ul className="space-y-3 text-[15px]">
-              {c.links.map(([label, href]) => (
-                <li key={href}>
-                  <Link href={href} className="text-pearl-100/85 hover:text-pearl-50 hover:underline">{label}</Link>
-                </li>
-              ))}
-            </ul>
+    <footer className="bg-mist text-[12px] leading-[1.35] text-ink-2">
+      <div className="container-wide py-10">
+        <p className="border-b border-hairline pb-4">
+          Livestock photographs show the actual specimen unless marked as representative. Colours vary with lighting.
+        </p>
+        <div className="grid grid-cols-2 gap-x-6 gap-y-8 py-8 md:grid-cols-5">
+          {cols.map((c) => (
+            <div key={c.title}>
+              <h2 className="mb-3 font-semibold text-ink">{c.title}</h2>
+              <ul className="space-y-2.5">
+                {c.links.map(([label, href]) => (
+                  <li key={href}><Link href={href} className="hover:text-ink hover:underline">{label}</Link></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <div className="col-span-2 md:col-span-1">
+            <h2 className="mb-3 font-semibold text-ink">Visit</h2>
+            <address className="space-y-2.5 not-italic">
+              <p>{store.address}</p>
+              <p>{store.hours}</p>
+              <p>{store.phone}</p>
+            </address>
           </div>
-        ))}
-        <div>
-          <h2 className="t-eyebrow mb-5 text-gold-500">Visit</h2>
-          <address className="space-y-3 text-[15px] not-italic text-pearl-100/85">
-            <p>{store.address}</p>
-            <p>{store.hours}</p>
-            <p>{store.phone}</p>
-            <p>{store.email}</p>
-          </address>
-          {store.social.length > 0 && (
-            <ul className="mt-6 flex gap-4">
-              {store.social.map((s) => (
-                <li key={s.href}><a href={s.href} className="hover:underline">{s.label}</a></li>
-              ))}
-            </ul>
-          )}
         </div>
-      </div>
-      <div className="border-t border-ocean-700">
-        <div className="container-wide flex flex-col gap-3 py-6 text-xs text-ocean-300 md:flex-row md:items-center md:justify-between">
-          <p>© {new Date().getFullYear()} Coral Fanatics · {store.legalName}</p>
-          <ul className="flex flex-wrap gap-x-5 gap-y-2">
-            <li><Link href="/policies/terms" className="hover:underline">Terms</Link></li>
-            <li><Link href="/policies/privacy" className="hover:underline">Privacy (PDPA)</Link></li>
-            <li><Link href="/policies/livestock" className="hover:underline">Livestock terms</Link></li>
-            <li><Link href="/policies/returns" className="hover:underline">Returns</Link></li>
+        <div className="flex flex-col gap-3 border-t border-hairline pt-4 md:flex-row md:items-center md:justify-between">
+          <p>Copyright © {new Date().getFullYear()} Coral Fanatics. All rights reserved.</p>
+          <ul className="flex flex-wrap divide-x divide-hairline">
+            {[["Terms of Sale", "/policies/terms"], ["Privacy Policy", "/policies/privacy"], ["Livestock Terms", "/policies/livestock"], ["Returns", "/policies/returns"]].map(([l, h]) => (
+              <li key={h} className="px-2.5 first:pl-0"><Link href={h!} className="hover:text-ink hover:underline">{l}</Link></li>
+            ))}
           </ul>
+          <p>Singapore</p>
         </div>
       </div>
     </footer>

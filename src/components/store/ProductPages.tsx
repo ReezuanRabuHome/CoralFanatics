@@ -1,42 +1,44 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ChevronRight } from "lucide-react";
 import { getProduct, products, sectionHref, type Product } from "@/data/sample";
-import { ProductCard } from "@/components/store/cards";
+import { ProductCard, Shelf } from "@/components/store/cards";
 import { BuyBox } from "@/components/store/BuyBox";
 import { DetailTabs, Gallery } from "@/components/store/pdp";
 import { FactsGrid, FulfilmentSummary } from "@/components/store/FactsGrid";
+import { SubNav } from "@/components/store/SubNav";
 import { fulfilment, policies } from "@/config/placeholders";
 
-export const sectionMeta: Record<Product["section"], { title: string; eyebrow: string; blurb: string; crumb: string }> = {
-  fish: { title: "Marine fish.", eyebrow: "Marine life", blurb: "Reef-suitable fish, chosen with care.", crumb: "Marine fish" },
-  invertebrates: { title: "Invertebrates.", eyebrow: "Marine life", blurb: "Shrimp, snails, crabs and urchins: your reef's clean-up crew and characters.", crumb: "Invertebrates" },
-  equipment: { title: "Equipment.", eyebrow: "Equipment & essentials", blurb: "Lighting, pumps, salt and testing, from brands we use ourselves.", crumb: "Equipment" },
-  additives: { title: "Additives.", eyebrow: "Equipment & essentials", blurb: "Supplements and maintenance products for stable parameters.", crumb: "Additives" },
+export const sectionMeta: Record<Product["section"], { title: string; blurb: string; crumb: string }> = {
+  fish: { title: "Marine fish.", blurb: "Reef-suitable fish, chosen with care.", crumb: "Marine Fish" },
+  invertebrates: { title: "Invertebrates.", blurb: "Shrimp, snails, crabs and urchins. Your reef's clean-up crew.", crumb: "Invertebrates" },
+  equipment: { title: "Equipment.", blurb: "Lighting, pumps, salt and testing.", crumb: "Equipment" },
+  additives: { title: "Additives.", blurb: "Supplements and care products for stable parameters.", crumb: "Additives" },
+};
+
+const siblings: Record<Product["section"], Product["section"][]> = {
+  fish: ["fish", "invertebrates"],
+  invertebrates: ["fish", "invertebrates"],
+  equipment: ["equipment", "additives"],
+  additives: ["equipment", "additives"],
 };
 
 export function ProductListingPage({ section }: { section: Product["section"] }) {
   const meta = sectionMeta[section];
   const items = products.filter((p) => p.section === section);
-  const subs = [...new Set(items.map((p) => p.subCategory))];
   return (
-    <div className="container-wide pt-24 pb-24 lg:pt-32">
-      <header className="mb-8 max-w-3xl">
-        <p className="t-eyebrow text-gold-700">{meta.eyebrow}</p>
-        <h1 className="t-h1 mt-3">{meta.title}</h1>
-        <p className="mt-3 text-lg text-ink-600">{meta.blurb}</p>
-      </header>
-      <ul className="no-scrollbar -mx-4 mb-10 flex gap-2 overflow-x-auto px-4 lg:mx-0 lg:px-0">
-        <li><span className="inline-flex h-10 items-center rounded-full border border-ink-900 bg-ink-900 px-4 text-sm font-medium text-pearl-50">All</span></li>
-        {subs.map((s) => (
-          <li key={s}><span className="inline-flex h-10 items-center rounded-full border border-pearl-300 bg-pearl-50 px-4 text-sm font-medium whitespace-nowrap">{s}</span></li>
-        ))}
-      </ul>
-      <div className="mb-6 flex items-center justify-between text-sm text-ink-600">
-        <span className="tabular">{items.length} products</span>
-        <span>Sort: {section === "equipment" || section === "additives" ? "Featured" : "Newest"}</span>
-      </div>
-      <div className="grid grid-cols-2 gap-x-3 gap-y-8 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4 lg:gap-y-12">
-        {items.map((p) => <ProductCard key={p.slug} p={p} />)}
+    <div className="bg-mist">
+      <div className="container-wide pt-24 pb-24 lg:pt-28">
+        <header className="mb-8 lg:mb-10">
+          <h1 className="t-section">{meta.title}</h1>
+          <p className="t-sub mt-3 max-w-[46ch] text-ink-2">{meta.blurb}</p>
+        </header>
+        <div className="mb-8 border-b border-hairline">
+          <SubNav current={sectionHref[section]} items={siblings[section].map((s) => ({ label: sectionMeta[s].crumb, href: sectionHref[s] }))} />
+        </div>
+        <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-4">
+          {items.map((p) => <li key={p.slug}><ProductCard p={p} className="h-full" /></li>)}
+        </ul>
       </div>
     </div>
   );
@@ -46,79 +48,60 @@ export function ProductDetailPage({ slug, section }: { slug: string; section: Pr
   const p = getProduct(slug);
   if (!p || p.section !== section) notFound();
   const meta = sectionMeta[section];
-  const related = products.filter((x) => x.section === section && x.slug !== p.slug).slice(0, 4);
+  const related = products.filter((x) => x.section === section && x.slug !== p.slug);
 
   const tabs = p.isLivestock
     ? [
         { id: "about", label: "About", content: <p>{p.description}</p> },
-        {
-          id: "care",
-          label: "Care & compatibility",
-          content: <p className="text-ink-600">[Care, tankmates and feeding notes for {p.name}, to be written by the shop.]</p>,
-        },
-        { id: "fulfilment", label: "Collection & delivery", content: <div className="space-y-3"><p>{fulfilment.collectionSummary}</p><p>{fulfilment.deliverySummary}</p><p className="text-ink-600">{policies.livestockTerms}</p></div> },
+        { id: "care", label: "Care and compatibility", content: <p className="text-ink-2">Care, tankmate and feeding notes for {p.name} will be written by the shop.</p> },
+        { id: "fulfilment", label: "Collection and delivery", content: <div className="space-y-3"><p>{fulfilment.collection.detail}</p><p>{fulfilment.delivery.detail}</p><p className="text-ink-2">{policies.livestockTerms}</p></div> },
       ]
     : [
-        { id: "desc", label: "Description", content: <p>{p.description}</p> },
-        {
-          id: "specs",
-          label: "Specifications",
-          content: (
-            <table className="w-full text-left text-[15px]">
-              <tbody className="divide-y divide-pearl-300">
-                {p.specs?.map(([k, v]) => (
-                  <tr key={k}><th scope="row" className="w-48 py-3 font-normal text-ink-600">{k}</th><td className="py-3">{v}</td></tr>
-                ))}
-              </tbody>
-            </table>
-          ),
-        },
-        { id: "fulfilment", label: "Collection & delivery", content: <div className="space-y-3"><p>{fulfilment.collectionSummary}</p><p>{fulfilment.deliverySummary}</p></div> },
+        { id: "desc", label: "Overview", content: <p>{p.description}</p> },
+        { id: "specs", label: "Tech specs", content: <FactsGrid facts={p.specs ?? []} /> },
+        { id: "fulfilment", label: "Collection and delivery", content: <div className="space-y-3"><p>{fulfilment.collection.detail}</p><p>{fulfilment.delivery.detail}</p></div> },
       ];
 
   return (
-    <div className="container-wide pt-20 pb-28 lg:pt-28 lg:pb-24">
-      <nav aria-label="Breadcrumb" className="mb-6 text-sm text-ink-600">
-        <Link href={sectionHref[section]} className="hover:underline">{meta.crumb}</Link> <span aria-hidden>/</span>{" "}
-        <span className="text-ink-900">{p.subCategory}</span>
-      </nav>
-      <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
-        <div className="lg:col-span-7">
-          <Gallery
-            tone={p.isLivestock ? "dark" : "light"}
-            chip={p.representativePhoto ? "Representative photo" : undefined}
-            labels={
-              p.isLivestock
-                ? [`${p.name}: side profile`, `${p.name}: detail`]
-                : [`${p.name}: front, white seamless`, `${p.name}: back / label`, `${p.name}: in use`, `${p.name}: size reference`]
-            }
-          />
-        </div>
-        <div className="lg:col-span-5">
-          <p className="t-eyebrow text-ink-600">{p.brand ?? `${meta.crumb} · ${p.subCategory}`}</p>
-          <h1 className="t-h1 mt-3">{p.name}</h1>
-          {p.scientificName && <p className="mt-2 text-lg text-ink-600 italic">{p.scientificName}</p>}
-          {p.highlights && (
-            <ul className="mt-5 space-y-1.5 text-[15px] text-ink-600">
-              {p.highlights.map((h) => <li key={h} className="flex gap-2"><span aria-hidden>–</span>{h}</li>)}
-            </ul>
-          )}
-          <div className="mt-8"><BuyBox p={p} /></div>
-          {p.facts && <div className="mt-6"><FactsGrid facts={p.facts} /></div>}
-          <div className="mt-6">
-            <FulfilmentSummary livestock={p.isLivestock} lines={[fulfilment.collectionSummary, fulfilment.deliverySummary]} />
+    <>
+      <div className="container-wide pt-20 pb-16 lg:pt-24">
+        <nav aria-label="Breadcrumb" className="t-small mb-6 flex items-center gap-1 text-ink-2">
+          <Link href={sectionHref[section]} className="hover:text-ink hover:underline">{meta.crumb}</Link>
+          <ChevronRight className="size-3.5" aria-hidden />
+          <span>{p.subCategory}</span>
+        </nav>
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-7">
+            <Gallery
+              tone={p.isLivestock ? "specimen" : "white"}
+              note={p.representativePhoto ? "Representative photo" : undefined}
+              labels={p.isLivestock ? [`${p.name}, side profile`, `${p.name}, detail`] : [`${p.name}, front`, `${p.name}, label`, `${p.name}, in use`]}
+            />
+          </div>
+          <div className="lg:col-span-5 lg:pt-4">
+            {p.brand && <p className="mb-2 text-[15px] text-ink-2">{p.brand}</p>}
+            <h1 className="t-title">{p.name}</h1>
+            {p.scientificName && <p className="mt-2 text-[17px] text-ink-2 italic">{p.scientificName}</p>}
+            {p.highlights && <p className="mt-4 text-[17px] text-ink-2">{p.highlights.join(". ")}.</p>}
+            <div className="mt-8"><BuyBox p={p} /></div>
+            <div className="mt-10 rounded-2xl bg-mist p-6"><FulfilmentSummary livestock={p.isLivestock} /></div>
+            {p.facts && (
+              <div className="mt-10">
+                <h2 className="mb-3 text-[15px] font-semibold">At a glance</h2>
+                <FactsGrid facts={p.facts} />
+              </div>
+            )}
           </div>
         </div>
+        <div className="mt-20 lg:mt-28"><DetailTabs tabs={tabs} /></div>
       </div>
-      <section className="mt-16 lg:mt-24" aria-label="Details"><DetailTabs tabs={tabs} /></section>
       {related.length > 0 && (
-        <section className="mt-16 lg:mt-20">
-          <h2 className="t-h2 mb-8">You may also like</h2>
-          <div className="grid grid-cols-2 gap-x-3 gap-y-8 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4">
-            {related.map((x) => <ProductCard key={x.slug} p={x} />)}
-          </div>
-        </section>
+        <div className="bg-mist">
+          <Shelf title="You may also like.">
+            {related.map((x) => <li key={x.slug}><ProductCard p={x} /></li>)}
+          </Shelf>
+        </div>
       )}
-    </div>
+    </>
   );
 }

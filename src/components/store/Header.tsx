@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu, Search, User, ShoppingBag, X } from "lucide-react";
+import { Search, ShoppingBag } from "lucide-react";
 import { Badge } from "@/components/brand/Badge";
 import { useBag } from "@/components/store/bag";
 import { store } from "@/config/placeholders";
@@ -16,77 +16,68 @@ export const navItems = [
   { label: "Our Story", href: "/#story" },
 ];
 
+/** Thin, translucent global navigation. Dark over the homepage hero, light elsewhere. */
 export function Header() {
   const pathname = usePathname();
-  const overHero = pathname === "/";
-  const [scrolled, setScrolled] = useState(false);
+  const [overHero, setOverHero] = useState(true);
+  const dark = pathname === "/" && overHero;
   const [menuOpen, setMenuOpen] = useState(false);
-  const { count, setOpen } = useBag();
-
   useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 80);
+    // Dark bar only while the homepage hero is behind it.
+    const on = () => setOverHero(window.scrollY < Math.min(window.innerHeight, 960) - 48);
     on();
     window.addEventListener("scroll", on, { passive: true });
-    return () => window.removeEventListener("scroll", on);
+    window.addEventListener("resize", on);
+    return () => {
+      window.removeEventListener("scroll", on);
+      window.removeEventListener("resize", on);
+    };
   }, []);
+  const { count, setOpen } = useBag();
   useEffect(() => setMenuOpen(false), [pathname]);
 
-  const transparent = overHero && !scrolled && !menuOpen;
+  const bar = dark && !menuOpen ? "bg-ocean-deep/80 text-white/90" : "bg-white/80 text-ink/85";
 
   return (
     <>
-      <header
-        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-250 ${
-          transparent
-            ? "bg-gradient-to-b from-ocean-900/40 to-transparent text-pearl-50"
-            : "border-b border-pearl-300 bg-pearl-100/92 text-ink-900 backdrop-blur-md"
-        }`}
-      >
-        <div className="container-wide flex h-14 items-center gap-4 lg:h-[72px]">
-          <button className="-ml-2 grid size-10 place-items-center lg:hidden" aria-label="Open menu" onClick={() => setMenuOpen((v) => !v)}>
-            {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
-          <div className="flex flex-1 justify-center lg:flex-none lg:justify-start">
-            <span className="lg:hidden"><Badge size={40} priority /></span>
-            <span className="hidden lg:inline"><Badge size={52} priority /></span>
-          </div>
-          <nav aria-label="Main" className="hidden flex-1 justify-center gap-8 lg:flex">
+      <header className={`fixed inset-x-0 top-0 z-50 backdrop-blur-xl backdrop-saturate-150 transition-colors duration-300 ${bar}`}>
+        <div className="container-wide flex h-12 items-center justify-between">
+          <Link href="/" aria-label="Coral Fanatics home" className="shrink-0"><Badge size={34} href={null} priority /></Link>
+          <nav aria-label="Main" className="hidden items-center gap-9 md:flex">
             {navItems.map((n) => (
-              <Link key={n.href} href={n.href} className="text-[15px] font-medium underline-offset-[6px] hover:underline">
+              <Link key={n.href} href={n.href} className="text-[13px] tracking-[-0.01em] opacity-90 transition-opacity hover:opacity-100">
                 {n.label}
               </Link>
             ))}
           </nav>
-          <div className="-mr-2 flex items-center">
-            <Link href="/search" aria-label="Search" className="grid size-10 place-items-center rounded-full hover:bg-current/10">
-              <Search className="size-5" strokeWidth={1.75} />
+          <div className="flex items-center gap-1">
+            <Link href="/search" aria-label="Search" className="grid size-9 place-items-center opacity-90 hover:opacity-100">
+              <Search className="size-[17px]" strokeWidth={1.6} />
             </Link>
-            <Link href="/order-lookup" aria-label="Order lookup" className="hidden size-10 place-items-center rounded-full hover:bg-current/10 sm:grid">
-              <User className="size-5" strokeWidth={1.75} />
-            </Link>
-            <button onClick={() => setOpen(true)} aria-label={`Bag, ${count} items`} className="relative grid size-10 place-items-center rounded-full hover:bg-current/10">
-              <ShoppingBag className="size-5" strokeWidth={1.75} />
+            <button onClick={() => setOpen(true)} aria-label={`Bag, ${count} items`} className="relative grid size-9 place-items-center opacity-90 hover:opacity-100">
+              <ShoppingBag className="size-[17px]" strokeWidth={1.6} />
               {count > 0 && (
-                <span className="tabular absolute top-0.5 right-0.5 grid min-w-[18px] place-items-center rounded-full bg-orange-500 px-1 text-[11px] leading-[18px] font-semibold text-ocean-950">
-                  {count}
+                <span className="tabular absolute right-0.5 bottom-1 grid size-[15px] place-items-center rounded-full bg-current text-[9px] font-semibold">
+                  <span className={dark && !menuOpen ? "text-ocean-deep" : "text-white"}>{count}</span>
                 </span>
               )}
+            </button>
+            <button className="relative grid size-9 place-items-center md:hidden" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen((v) => !v)}>
+              <span className={`absolute h-px w-[17px] bg-current transition-transform duration-300 ${menuOpen ? "rotate-45" : "-translate-y-[4px]"}`} />
+              <span className={`absolute h-px w-[17px] bg-current transition-transform duration-300 ${menuOpen ? "-rotate-45" : "translate-y-[4px]"}`} />
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile menu sheet */}
-      <div className={`fixed inset-x-0 top-14 bottom-0 z-40 overflow-y-auto bg-pearl-100 transition-opacity duration-250 lg:hidden ${menuOpen ? "opacity-100" : "pointer-events-none opacity-0"}`}>
-        <nav aria-label="Mobile" className="container-wide flex flex-col py-4">
+      {/* Mobile menu: full-screen, large type */}
+      <div className={`fixed inset-0 top-12 z-40 bg-white transition-[opacity,visibility] duration-300 md:hidden ${menuOpen ? "visible opacity-100" : "invisible opacity-0"}`}>
+        <nav aria-label="Mobile" className="container-wide flex flex-col pt-6">
           {navItems.map((n) => (
-            <Link key={n.href} href={n.href} className="t-h2 border-b border-pearl-300 py-4">
-              {n.label}
-            </Link>
+            <Link key={n.href} href={n.href} className="py-2.5 text-[28px] font-semibold tracking-[-0.02em]">{n.label}</Link>
           ))}
-          <Link href="/order-lookup" className="border-b border-pearl-300 py-4 text-lg">Order lookup</Link>
-          <div className="mt-8 space-y-1 text-sm text-ink-600">
-            <p className="t-eyebrow mb-2 text-ink-900">Visit the shop</p>
+          <div className="t-small mt-10 space-y-1 text-ink-2">
+            <p className="font-medium text-ink">Visit the shop</p>
             <p>{store.address}</p>
             <p>{store.hours}</p>
           </div>

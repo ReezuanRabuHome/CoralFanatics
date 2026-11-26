@@ -1,5 +1,28 @@
 # Deliverable 2 — Visual Design System
 
+> ## Revision 2 (26 Nov 2026): supersedes the sections below where they conflict
+>
+> **Why:** owner feedback on the first prototype was that it looked AI-generated and nothing like the Apple-level quality requested. The causes were decoration: gold uppercase labels on every section, badges/pills on every card, dashed placeholder boxes with icons and captions, bracketed `[TBC]` text, heavy navy throughout, and a repeated "headline left / link right" pattern.
+>
+> **Principles now:** let type and photography do the work; remove anything that is not content.
+>
+> | Area | Revision 2 |
+> |---|---|
+> | Typeface | **Inter only**, with optical sizing (display cut at large sizes). Manrope dropped. Body 17px / 1.47, headlines weight 650 with tight tracking (−0.03em) |
+> | Surfaces | White and neutral mist `#F5F5F4` for most of the site. Deep ocean `#05141B` only for the hero, coral tiles and the story section. Warm pearl dropped (read as beige) |
+> | Text | Ink `#141617`; secondary `#6B6F73` |
+> | Action colour | Reef blue `#0B5F7D` for primary buttons and text links (`#6CC3E0` on dark). Gold appears only in the logo; coral orange only as the small "New" label |
+> | Navigation | 48px translucent bar with blur, 13px links, badge at 34px. Dark only while over the homepage hero |
+> | Composition | Centred headline + one-line subhead + filled button + text link with chevron. Large rounded tiles (28px radius) with text at the top and photography filling the tile. Horizontal "shelves" of cards with a two-tone heading |
+> | Cards | White, 20px radius, soft shadow, no border, no badges. Photo, name, ID (specimens), price. Availability text only when it changes what the customer can do ("Reserved in checkout", "Sold out", "Only 2 left") |
+> | Product pages | Large single image with dot pagination; right column: name, price, one button, fulfilment in a soft panel, facts as hairline rows. Details as editorial sections, not tabs |
+> | Filters | One "Filter" control opening a side sheet (bottom sheet on mobile); chip-style options |
+> | Placeholders | Flat tone with a single small "Photo placeholder" label; shot descriptions live in `aria-label`/`title` and the photography spec. Placeholder business facts written as plain copy ("to be confirmed") |
+> | Footer | Light mist, 12px, hairline dividers |
+> | Motion | One subtle reveal on homepage headings (scroll-driven, reduced-motion aware); hover lift on cards |
+>
+> Apple is the benchmark for *quality and restraint*. We do not use its branding, blue, typeface, iconography or copy.
+
 Name: **Reef** (internal design-system name).
 Implementation: Tailwind CSS v4 theme tokens (CSS variables) + shadcn/ui components restyled to these tokens. All values below map 1:1 to tokens in `src/styles/tokens.css`.
 

@@ -1,8 +1,9 @@
-import { Camera } from "lucide-react";
-
 /**
- * Clearly identified placeholder for a missing real photograph
- * (photography-spec.md §8, placeholders.md Q1). Never replace with stock/AI imagery.
+ * Placeholder for a missing real photograph (photography-spec.md §8).
+ * Deliberately quiet: a flat tone plus one small "Photo" label so the layout
+ * reads as it will with real imagery. The full shot description is kept in
+ * aria-label/title (and in the photography spec) rather than printed on screen.
+ * Never replace with stock or AI imagery.
  */
 export function PhotoPlaceholder({
   label,
@@ -10,36 +11,37 @@ export function PhotoPlaceholder({
   ratio = "1 / 1",
   className = "",
   compact = false,
-  rounded = true,
-  labelAt = "center",
+  rounded = false,
+  labelAt = "corner",
 }: {
   label: string;
-  tone?: "light" | "dark" | "specimen";
+  tone?: "light" | "dark" | "specimen" | "white";
   ratio?: string;
   className?: string;
   compact?: boolean;
   rounded?: boolean;
-  /** "top" keeps the label clear of overlaid text (e.g. hero headline). */
-  labelAt?: "center" | "top";
+  labelAt?: "corner" | "top" | "center";
 }) {
   const tones = {
-    light: "bg-pearl-200 text-ink-600 border-ink-400/30",
-    dark: "bg-ocean-800 text-ocean-300 border-ocean-600/60",
-    specimen: "bg-ocean-950 text-ocean-300 border-ocean-700",
+    light: "bg-mist text-ink-3",
+    white: "bg-white text-ink-3",
+    dark: "bg-ocean-2 text-on-ocean-2/70",
+    specimen: "bg-[#06090b] text-white/35",
+  } as const;
+  const pos = {
+    corner: "items-end justify-start p-4",
+    top: "items-start justify-end p-5 lg:p-6",
+    center: "items-center justify-center",
   } as const;
   return (
     <div
       role="img"
       aria-label={`Photo placeholder: ${label}`}
-      className={`relative flex w-full justify-center overflow-hidden ${labelAt === "top" ? "items-start justify-end! pt-[72px] pr-6 lg:pt-28 lg:pr-14" : "items-center"} ${rounded ? "rounded-xl" : ""} ${tones[tone]} ${className}`}
+      title={`Photo placeholder: ${label}`}
+      className={`flex w-full overflow-hidden ${rounded ? "rounded-2xl" : ""} ${tones[tone]} ${pos[labelAt]} ${className}`}
       style={{ aspectRatio: ratio }}
     >
-      <div className={`absolute inset-2 border border-dashed ${rounded ? "rounded-lg" : ""} ${tones[tone]} bg-transparent`} />
-      <div className={`relative flex flex-col gap-2 ${labelAt === "top" ? "max-w-[55%] items-end text-right" : "max-w-[80%] items-center text-center"}`}>
-        <Camera className={compact ? "size-4" : "size-5"} strokeWidth={1.5} aria-hidden />
-        {!compact && <span className="t-eyebrow text-[10px]">Photo placeholder</span>}
-        {!compact && <span className="text-xs leading-snug opacity-80">{label}</span>}
-      </div>
+      {!compact && <span className="text-[11px] font-medium tracking-[0.02em] select-none">Photo placeholder</span>}
     </div>
   );
 }

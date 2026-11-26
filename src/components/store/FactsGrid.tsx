@@ -1,25 +1,39 @@
+import { Store, Truck } from "lucide-react";
+import { fulfilment } from "@/config/placeholders";
+
+/** Key facts as simple rows: label left, value right. */
 export function FactsGrid({ facts }: { facts: [string, string][] }) {
   return (
-    <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-pearl-300 bg-pearl-300 sm:grid-cols-3">
+    <dl className="border-t border-hairline">
       {facts.map(([k, v]) => (
-        <div key={k} className="bg-pearl-50 px-4 py-3">
-          <dt className="text-xs text-ink-600">{k}</dt>
-          <dd className="mt-0.5 text-[15px] font-semibold">{v}</dd>
+        <div key={k} className="flex justify-between gap-4 border-b border-hairline py-3 text-[15px]">
+          <dt className="text-ink-2">{k}</dt>
+          <dd className="text-right font-medium">{v}</dd>
         </div>
       ))}
     </dl>
   );
 }
 
-export function FulfilmentSummary({ lines, livestock }: { lines: string[]; livestock: boolean }) {
+export function FulfilmentSummary({ livestock }: { livestock: boolean; lines?: string[] }) {
+  const rows = [
+    { icon: Store, ...fulfilment.collection },
+    { icon: Truck, ...fulfilment.delivery },
+  ];
   return (
-    <ul className="space-y-2 rounded-xl bg-pearl-200/60 p-4 text-sm text-ink-600">
-      {lines.map((l) => (
-        <li key={l} className="flex gap-2"><span aria-hidden className="text-ink-900">·</span>{l}</li>
+    <ul className="space-y-4">
+      {rows.map((r) => (
+        <li key={r.title} className="flex gap-3.5">
+          <r.icon className="mt-0.5 size-5 shrink-0" strokeWidth={1.5} aria-hidden />
+          <div>
+            <p className="text-[15px] font-semibold">{r.title}</p>
+            <p className="t-small text-ink-2">{r.detail}</p>
+          </div>
+        </li>
       ))}
       {livestock && (
-        <li className="flex gap-2"><span aria-hidden className="text-ink-900">·</span>
-          <a href="/policies/livestock" className="font-medium text-ink-900 underline underline-offset-4">Livestock policy</a>
+        <li className="t-small pl-[34px]">
+          <a href="/policies/livestock" className="link">Livestock policy</a>
         </li>
       )}
     </ul>

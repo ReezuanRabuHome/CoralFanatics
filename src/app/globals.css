@@ -1,38 +1,40 @@
 @import "tailwindcss";
-@import "@fontsource-variable/manrope";
-@import "@fontsource-variable/inter";
+@import "@fontsource-variable/inter/opsz.css";
 
 /*
- * Reef design system tokens (docs/planning/02-design-system.md).
- * Gold and orange were sampled from the supplied logo (Brand Audit §4).
+ * Reef design system, revision 2 (docs/planning/02-design-system.md).
+ * Direction: restrained, type-led, mostly white/neutral surfaces, photography
+ * does the talking. One typeface (Inter, optical sizing), no decorative chrome.
+ * Gold/orange sampled from the logo (Brand Audit §4) are used very sparingly.
  */
 @theme {
-  --color-ocean-950: #061820;
-  --color-ocean-900: #09212c;
-  --color-ocean-800: #102b38;
-  --color-ocean-700: #1a3a49;
-  --color-ocean-600: #2a5062;
-  --color-ocean-300: #8fa6b0;
-  --color-ocean-100: #dce5e8;
+  /* Neutrals */
+  --color-white: #ffffff;
+  --color-mist: #f5f5f4; /* section / page background */
+  --color-mist-2: #ebebea; /* pressed / skeleton */
+  --color-hairline: #d9d9d7; /* dividers */
+  --color-ink: #141617; /* primary text */
+  --color-ink-2: #6b6f73; /* secondary text (5.0:1 on white) */
+  --color-ink-3: #8e9296; /* tertiary / disabled, non-essential text */
 
-  --color-pearl-50: #ffffff;
-  --color-pearl-100: #f5f3ed;
-  --color-pearl-200: #ece9e1;
-  --color-pearl-300: #e2e7e7;
+  /* Ocean: brand dark, used for cinematic moments only */
+  --color-ocean: #09212c;
+  --color-ocean-deep: #05141b;
+  --color-ocean-2: #102b38;
+  --color-on-ocean-2: #a3b4bb; /* secondary text on ocean */
 
-  --color-ink-900: #17272e;
-  --color-ink-600: #5f6e75;
-  --color-ink-400: #718087;
+  /* Action */
+  --color-reef: #0b5f7d; /* links + primary buttons (7.1:1 on white) */
+  --color-reef-hover: #084a62;
+  --color-reef-light: #6cc3e0; /* links on ocean */
 
-  --color-gold-300: #f4dd69;
-  --color-gold-500: #ebc455;
-  --color-gold-600: #b3904c;
-  --color-gold-700: #84661a;
-  --color-gold-100: #f8eed0;
+  /* Brand accents (sampled from logo) */
+  --color-gold: #ebc455;
+  --color-gold-ink: #84661a;
+  --color-coral: #e2762e; /* "New" text on dark, dots */
+  --color-coral-ink: #b5520e; /* "New" text on light (5.0:1) */
 
-  --color-orange-500: #e2762e;
-  --color-orange-700: #b5520e;
-
+  /* Status (admin + rare storefront use) */
   --color-green-600: #2f7d5b;
   --color-green-100: #e3f1ea;
   --color-amber-600: #a86a0c;
@@ -42,10 +44,26 @@
   --color-blue-600: #2a6f8f;
   --color-blue-100: #e0eef4;
 
-  --font-display: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  /* Legacy aliases used by admin screens */
+  --color-pearl-50: #ffffff;
+  --color-pearl-100: #f5f5f4;
+  --color-pearl-200: #ebebea;
+  --color-pearl-300: #d9d9d7;
+  --color-ink-900: #141617;
+  --color-ink-600: #6b6f73;
+  --color-ink-400: #8e9296;
+  --color-ocean-950: #05141b;
+  --color-ocean-900: #09212c;
+  --color-ocean-700: #1a3a49;
+  --color-ocean-300: #a3b4bb;
+  --color-gold-500: #ebc455;
+  --color-gold-700: #84661a;
+  --color-orange-500: #e2762e;
 
-  --ease-reef: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --font-sans: "Inter Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sans);
+
+  --ease-reef: cubic-bezier(0.25, 0.1, 0.25, 1);
   --ease-reef-slow: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -53,161 +71,176 @@
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
+    font-optical-sizing: auto;
   }
   body {
-    @apply bg-pearl-100 text-ink-900 font-sans;
-    font-feature-settings: "cv11", "ss01";
+    @apply bg-white font-sans text-ink;
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.011em;
   }
   :focus-visible {
-    outline: 2px solid var(--color-ocean-600);
-    outline-offset: 2px;
+    outline: 2px solid var(--color-reef);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
-  .mode-ocean :focus-visible {
-    outline-color: var(--color-gold-500);
+  .on-ocean :focus-visible {
+    outline-color: var(--color-reef-light);
   }
 }
 
 @layer components {
-  /* Typography scale (fluid) */
-  .t-display-xl {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: clamp(2.75rem, 1.6rem + 5vw, 6rem);
-    line-height: 1.02;
+  /* Type scale. Tight, large, quiet. */
+  .t-hero {
+    font-size: clamp(2.75rem, 1.5rem + 5.2vw, 5.5rem);
+    line-height: 1.04;
+    font-weight: 650;
+    letter-spacing: -0.035em;
+  }
+  .t-section {
+    font-size: clamp(2.25rem, 1.5rem + 3vw, 3.5rem);
+    line-height: 1.07;
+    font-weight: 650;
     letter-spacing: -0.03em;
   }
-  .t-display-l {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: clamp(2.25rem, 1.5rem + 3.4vw, 4.5rem);
-    line-height: 1.05;
+  .t-tile {
+    font-size: clamp(2rem, 1.5rem + 1.8vw, 2.75rem);
+    line-height: 1.08;
+    font-weight: 650;
+    letter-spacing: -0.028em;
+  }
+  .t-title {
+    font-size: clamp(1.75rem, 1.4rem + 1.3vw, 2.5rem);
+    line-height: 1.1;
+    font-weight: 650;
     letter-spacing: -0.025em;
   }
-  .t-h1 {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: clamp(1.875rem, 1.4rem + 1.8vw, 3rem);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-  }
-  .t-h2 {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: clamp(1.5rem, 1.3rem + 0.8vw, 2rem);
-    line-height: 1.2;
+  .t-sub {
+    font-size: clamp(1.1875rem, 1.05rem + 0.5vw, 1.5rem);
+    line-height: 1.33;
+    font-weight: 400;
     letter-spacing: -0.015em;
   }
   .t-h3 {
-    font-family: var(--font-display);
+    font-size: 1.3125rem;
+    line-height: 1.24;
     font-weight: 600;
-    font-size: clamp(1.1875rem, 1.1rem + 0.3vw, 1.375rem);
-    line-height: 1.3;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
   }
-  .t-eyebrow {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    line-height: 1.2;
+  .t-small {
+    font-size: 0.875rem;
+    line-height: 1.43;
+    letter-spacing: -0.006em;
   }
   .t-id {
     font-size: 0.8125rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
+    letter-spacing: 0;
     font-variant-numeric: tabular-nums;
   }
   .tabular {
     font-variant-numeric: tabular-nums;
   }
 
-  /* Buttons */
+  /* Buttons: one filled style, one quiet style. */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap select-none;
+    @apply inline-flex items-center justify-center gap-1.5 rounded-full font-medium whitespace-nowrap select-none;
     height: 2.75rem;
     padding-inline: 1.375rem;
-    font-size: 0.9375rem;
-    transition:
-      background-color 150ms var(--ease-reef),
-      color 150ms var(--ease-reef),
-      border-color 150ms var(--ease-reef),
-      transform 150ms var(--ease-reef);
-  }
-  .btn:active:not(:disabled) {
-    transform: scale(0.98);
+    font-size: 1.0625rem;
+    letter-spacing: -0.015em;
+    transition: background-color 200ms var(--ease-reef), color 200ms var(--ease-reef), opacity 200ms;
   }
   .btn:disabled {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: not-allowed;
   }
-  .btn-lg {
-    height: 3.5rem;
-    padding-inline: 2rem;
-    font-size: 1rem;
-  }
   .btn-sm {
-    height: 2.25rem;
-    padding-inline: 1rem;
+    height: 2rem;
+    padding-inline: 0.9375rem;
     font-size: 0.875rem;
   }
+  .btn-lg {
+    height: 3.25rem;
+    padding-inline: 1.75rem;
+  }
   .btn-primary {
-    @apply bg-ocean-900 text-pearl-50 hover:bg-ocean-700;
+    @apply bg-reef text-white hover:bg-reef-hover;
   }
+  .btn-quiet {
+    @apply bg-mist text-ink hover:bg-mist-2;
+  }
+  .btn-light {
+    @apply bg-white text-ink hover:bg-mist;
+  }
+  .btn-outline {
+    @apply border border-reef text-reef hover:bg-reef hover:text-white;
+  }
+  .btn-outline-light {
+    @apply border border-white/80 text-white hover:bg-white hover:text-ink;
+  }
+  /* Legacy names used by admin/other screens */
   .btn-secondary {
-    @apply border border-ink-900 text-ink-900 hover:bg-ink-900 hover:text-pearl-50;
-  }
-  .btn-primary-ocean {
-    @apply bg-pearl-100 text-ocean-900 hover:bg-pearl-50;
-  }
-  .btn-secondary-ocean {
-    @apply border border-pearl-100/60 text-pearl-100 hover:border-pearl-100 hover:bg-pearl-100/10;
-  }
-  .btn-accent {
-    @apply bg-gold-500 text-ocean-900 hover:bg-gold-300;
+    @apply border border-reef text-reef hover:bg-reef hover:text-white;
   }
 
-  .link-arrow {
-    @apply inline-flex items-center gap-1.5 font-semibold underline-offset-4 hover:underline;
+  .link {
+    @apply inline-flex items-center gap-0.5 text-reef hover:underline;
+  }
+  .on-ocean .link {
+    @apply text-reef-light;
   }
 
-  /* Layout containers */
+  /* Containers */
   .container-wide {
-    @apply mx-auto w-full px-4 md:px-6 lg:px-10 xl:px-14;
-    max-width: 1440px;
+    @apply mx-auto w-full px-5 md:px-8 lg:px-12;
+    max-width: 1320px;
   }
   .container-content {
-    @apply mx-auto w-full px-4 md:px-6 lg:px-10;
-    max-width: 1200px;
+    @apply mx-auto w-full px-5 md:px-8;
+    max-width: 1060px;
   }
 
-  /* Form fields */
+  /* Forms: large and calm */
   .field {
-    @apply block w-full rounded-[10px] border border-pearl-300 bg-pearl-50 px-3.5 text-[15px] text-ink-900 placeholder:text-ink-400;
-    height: 3rem;
-    transition: border-color 150ms var(--ease-reef);
+    @apply block w-full rounded-xl border border-hairline bg-white px-4 text-[17px] text-ink placeholder:text-ink-3;
+    height: 3.5rem;
+    transition: border-color 150ms, box-shadow 150ms;
   }
   .field:focus {
-    @apply border-ocean-600;
-    outline: 2px solid color-mix(in srgb, var(--color-ocean-600) 25%, transparent);
-    outline-offset: 0;
+    @apply border-reef;
+    outline: none;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-reef) 18%, transparent);
   }
   .label {
-    @apply mb-1.5 block text-[13px] font-medium text-ink-900;
+    @apply mb-2 block text-[14px] font-medium text-ink;
+  }
+
+  /* Store card surface */
+  .card {
+    @apply rounded-[20px] bg-white;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.03), 0 6px 24px rgb(0 0 0 / 0.05);
+    transition: box-shadow 300ms var(--ease-reef), transform 300ms var(--ease-reef);
+  }
+  a.card:hover,
+  .card-hover:hover {
+    box-shadow: 0 2px 4px rgb(0 0 0 / 0.04), 0 14px 40px rgb(0 0 0 / 0.09);
+    transform: translateY(-2px);
   }
 }
 
-/* Scroll reveal (homepage only); disabled for reduced motion */
+/* One subtle reveal, homepage only; respects reduced motion. */
 @media (prefers-reduced-motion: no-preference) {
-  .reveal {
-    animation: reveal linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 40%;
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 30%;
+    }
   }
   @keyframes reveal {
     from {
       opacity: 0;
-      transform: translateY(16px);
+      transform: translateY(24px);
     }
     to {
       opacity: 1;
