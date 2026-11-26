@@ -59,7 +59,7 @@ export function ProductDetailPage({ slug, section }: { slug: string; section: Pr
     : [
         { id: "desc", label: "Overview", content: <p>{p.description}</p> },
         { id: "specs", label: "Tech specs", content: <FactsGrid facts={p.specs ?? []} /> },
-        { id: "fulfilment", label: "Collection and delivery", content: <div className="space-y-3"><p>{fulfilment.collection.detail}</p><p>{fulfilment.delivery.detail}</p></div> },
+        { id: "fulfilment", label: "Collection and delivery", content: <div className="space-y-3"><p>{fulfilment.collection.detail}</p><p>{fulfilment.deliveryDryGoods.detail}</p></div> },
       ];
 
   return (
@@ -75,6 +75,7 @@ export function ProductDetailPage({ slug, section }: { slug: string; section: Pr
             <Gallery
               tone={p.isLivestock ? "specimen" : "white"}
               note={p.representativePhoto ? "Representative photo" : undefined}
+              photos={p.photo ? [p.photo] : []}
               labels={p.isLivestock ? [`${p.name}, side profile`, `${p.name}, detail`] : [`${p.name}, front`, `${p.name}, label`, `${p.name}, in use`]}
             />
           </div>

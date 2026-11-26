@@ -18,7 +18,7 @@ export function FactsGrid({ facts }: { facts: [string, string][] }) {
 export function FulfilmentSummary({ livestock }: { livestock: boolean; lines?: string[] }) {
   const rows = [
     { icon: Store, ...fulfilment.collection },
-    { icon: Truck, ...fulfilment.delivery },
+    { icon: Truck, ...(livestock ? fulfilment.delivery : fulfilment.deliveryDryGoods) },
   ];
   return (
     <ul className="space-y-4">

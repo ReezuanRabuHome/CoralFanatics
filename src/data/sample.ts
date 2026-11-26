@@ -177,9 +177,42 @@ export interface Product {
   specs?: [string, string][];
   facts?: [string, string][];
   lowStockThreshold: number;
+  /** Real Coral Fanatics photograph (public/photos), if supplied. */
+  photo?: string;
 }
 
 export const products: Product[] = [
+  // Products with real shop photographs (26 Nov 2026). Prices, stock and
+  // variants are SAMPLE values; species identified from the photos.
+  {
+    slug: "regal-blue-tang", name: "Regal Blue Tang", scientificName: "Paracanthurus hepatus", section: "fish", subCategory: "Tangs",
+    variants: [{ id: "rbt-s", name: "Small ~5 cm", priceCents: 6800, stock: 6 }, { id: "rbt-m", name: "Medium ~8 cm", priceCents: 9800, stock: 3 }],
+    isLivestock: true, representativePhoto: true, lowStockThreshold: 2, photo: "/photos/blue-tangs.jpg",
+    description: "An active, fast-swimming tang that needs plenty of swimming room and a steady diet including marine algae.",
+    facts: [["Reef safe", "Yes"], ["Temperament", "Semi-aggressive"], ["Diet", "Omnivore"], ["Max size", "25 cm"], ["Min tank", "~500 L"], ["Care", "Intermediate"]],
+  },
+  {
+    slug: "yellow-watchman-goby", name: "Yellow Watchman Goby", scientificName: "Cryptocentrus cinctus", section: "fish", subCategory: "Gobies",
+    variants: [{ id: "ywg", name: "Standard", priceCents: 3200, stock: 4 }],
+    isLivestock: true, representativePhoto: true, lowStockThreshold: 2, photo: "/photos/yellow-watchman-goby.jpg",
+    description: "A hardy sand-dwelling goby that often pairs with a pistol shrimp and sits watch at the burrow entrance.",
+    facts: [["Reef safe", "Yes"], ["Temperament", "Peaceful"], ["Diet", "Carnivore"], ["Max size", "10 cm"], ["Min tank", "~110 L"], ["Care", "Beginner"]],
+  },
+  {
+    slug: "electric-blue-hermit-crab", name: "Electric Blue Hermit Crab", scientificName: "Calcinus elegans", section: "invertebrates", subCategory: "Crabs",
+    variants: [{ id: "ebh", name: "Each", priceCents: 1500, stock: 10 }],
+    isLivestock: true, representativePhoto: true, lowStockThreshold: 3, photo: "/photos/electric-blue-hermit-crabs.jpg",
+    description: "A colourful clean-up crew hermit that grazes algae and leftover food. Keep spare empty shells in the tank.",
+    facts: [["Reef safe", "With caution"], ["Role", "Clean-up crew"], ["Care", "Beginner"], ["Max size", "4 cm"], ["Sensitivity", "Copper-sensitive"], ["With fish", "Generally"]],
+  },
+  {
+    slug: "nyos-quantum-protein-skimmer", name: "Quantum Protein Skimmer", brand: "Nyos", section: "equipment", subCategory: "Filtration",
+    variants: [{ id: "nq", name: "Model to be confirmed", priceCents: 69000, stock: 2 }],
+    isLivestock: false, lowStockThreshold: 1, photo: "/photos/nyos-quantum-skimmer.jpg",
+    description: "An in-sump protein skimmer that removes dissolved organic waste before it breaks down in the aquarium.",
+    highlights: ["In-sump protein skimmer", "Model, sizing and specifications to be confirmed by the shop"],
+    specs: [["Type", "In-sump protein skimmer"], ["Model", "To be confirmed"], ["Recommended tank size", "To be confirmed"]],
+  },
   {
     slug: "ocellaris-clownfish", name: "Ocellaris Clownfish", scientificName: "Amphiprion ocellaris", section: "fish", subCategory: "Clownfish",
     variants: [{ id: "oc-s", name: "Small ~3 cm", priceCents: 2800, stock: 6 }, { id: "oc-m", name: "Medium ~5 cm", priceCents: 3800, stock: 2 }],

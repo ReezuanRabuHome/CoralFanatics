@@ -43,10 +43,15 @@ export function ProductCard({ p, className = "" }: { p: Product; className?: str
   const note = stock <= 0 ? "Sold out" : stock <= p.lowStockThreshold ? `Only ${stock} left` : null;
   return (
     <Link href={productHref(p)} className={`card group block overflow-hidden ${className}`}>
-      <PhotoPlaceholder
-        label={p.isLivestock ? `${p.name}, representative photo` : `${p.name} on white seamless`}
-        tone={p.isLivestock ? "specimen" : "white"}
-      />
+      <div className="overflow-hidden">
+        <Photo
+          src={p.photo}
+          alt={p.isLivestock ? `${p.name}, representative photo` : `${p.brand ? p.brand + " " : ""}${p.name}`}
+          tone={p.isLivestock ? "specimen" : "white"}
+          sizes="(min-width: 1024px) 24vw, (min-width: 640px) 40vw, 72vw"
+          imgClassName={`transition-transform duration-700 ease-[var(--ease-reef-slow)] group-hover:scale-[1.03] ${p.isLivestock ? "" : "!object-contain bg-white"}`}
+        />
+      </div>
       <div className="px-5 pt-4 pb-5">
         {p.brand && <p className="mb-1 text-[12px] text-ink-2">{p.brand}</p>}
         <h3 className="text-[17px] leading-snug font-semibold tracking-[-0.02em]">{p.name}</h3>

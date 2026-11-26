@@ -119,19 +119,30 @@ export default function HomePage() {
         </div>
         <div className="container-wide grid gap-3 md:grid-cols-2 md:gap-4">
           {[
-            { title: "Marine fish", line: "Clownfish, tangs, wrasses and more.", href: "/marine-life/fish", dark: false },
-            { title: "Invertebrates", line: "Shrimp, snails, crabs and urchins.", href: "/marine-life/invertebrates", dark: true },
+            { title: "Marine fish", line: "Tangs, gobies, clownfish and more.", href: "/marine-life/fish", photo: "/photos/blue-tangs.jpg", pos: "50% 60%" },
+            { title: "Invertebrates", line: "Hermit crabs, shrimp, snails and urchins.", href: "/marine-life/invertebrates", photo: "/photos/electric-blue-hermit-crabs.jpg", pos: "50% 65%" },
           ].map((t) => (
             <Link
               key={t.title}
               href={t.href}
-              className={`group relative flex aspect-[4/5] flex-col items-center overflow-hidden rounded-[28px] pt-10 text-center md:aspect-[5/6] ${t.dark ? "on-ocean bg-ocean-deep text-white" : "bg-mist"}`}
+              className="on-ocean group relative flex aspect-[4/5] flex-col items-center overflow-hidden rounded-[28px] bg-ocean-deep pt-10 text-center text-white md:aspect-[5/6]"
             >
-              <PhotoPlaceholder tone={t.dark ? "specimen" : "light"} ratio="auto" className={`absolute inset-0 h-full ${t.dark ? "!bg-ocean-deep" : ""}`} label={`Real ${t.title.toLowerCase()} photograph from the shop`} />
+              <div className="absolute inset-0">
+                <Photo
+                  src={t.photo}
+                  alt={`${t.title} at Coral Fanatics`}
+                  ratio="auto"
+                  className="h-full"
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  position={t.pos}
+                  imgClassName="transition-transform duration-700 ease-[var(--ease-reef-slow)] group-hover:scale-[1.03]"
+                />
+                <div className="absolute inset-x-0 top-0 h-[55%] bg-gradient-to-b from-black/85 via-black/50 to-transparent" />
+              </div>
               <div className="relative px-6">
                 <h3 className="t-tile">{t.title}</h3>
-                <p className={`mt-2 text-[17px] ${t.dark ? "text-white/70" : "text-ink-2"}`}>{t.line}</p>
-                <p className={`mt-4 inline-flex items-center gap-0.5 text-[17px] group-hover:underline ${t.dark ? "text-reef-light" : "text-reef"}`}>
+                <p className="mt-2 text-[17px] text-white/80">{t.line}</p>
+                <p className="mt-4 inline-flex items-center gap-0.5 text-[17px] font-medium text-white group-hover:underline">
                   Shop {t.title.toLowerCase()} <ChevronRight className="size-4" strokeWidth={2} />
                 </p>
               </div>

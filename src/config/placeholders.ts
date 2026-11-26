@@ -20,6 +20,7 @@ export const store = {
 export const fulfilment = {
   collection: { title: "Collect in store", detail: "Ready to collect at our shop. Hours to be confirmed." },
   delivery: { title: "Delivery in Singapore", detail: "Scheduled livestock delivery. Days and fees to be confirmed." },
+  deliveryDryGoods: { title: "Delivery in Singapore", detail: "Delivered to your door. Fees and timing to be confirmed." },
   /** Q3: layout-only value. Real fee rules will be configured in Settings. */
   deliveryFeeCents: 1500,
   /** Q4: layout-only collection windows. */

@@ -9,7 +9,7 @@ Rules:
 
 | # | Question | Placeholder used | Where it shows | Resolved? |
 |---|---|---|---|---|
-| Q1 | Shop photography | 6 real coral photos received 26 Nov 2026 (see mapping below). Everything else still uses a flat placeholder with a small "Photo placeholder" label. Still needed: fish, invertebrates, dry goods, shop interior/team, a wide high-resolution hero shot | Everywhere without a real photo | Partly |
+| Q1 | Shop photography | 10 real photos received 26 Nov 2026: 6 corals, 2 fish, 1 invertebrate, 1 equipment (see mapping below). Everything else still uses a flat placeholder with a small "Photo placeholder" label. Still needed: more dry goods, shop interior/team, a wide high-resolution hero shot, an unwatermarked skimmer image | Everywhere without a real photo | Partly |
 | Q1b | Vector logo | Interim derived PNGs (`assets/brand/`) | Nav, footer, favicon | ☐ |
 | Q2 | GST registration / price display | Prices shown without a GST statement; checkout line "GST: [to be confirmed]" | PDP, checkout | ☐ |
 | Q3 | Livestock delivery method, days, fees | "Delivery in Singapore: [schedule TBC]"; fee shown as `S$[TBC]`; prototype uses S$15.00 flat for layout only | Service strip, PDP, checkout | ☐ |
@@ -33,5 +33,9 @@ Rules:
 | IMG_6926.jpeg | `public/photos/hammer-green.jpg` | LPS tile; CF-LPS-0089 | Hammer Coral |
 | IMG_6925.jpeg | `public/photos/chalice-orange-teal.jpg` | CF-LPS-0090 | Orange & Teal Chalice (*Echinophyllia* sp.?) — least certain |
 | IMG_6770.jpeg | `public/photos/ricordea-yuma-orange.jpg` | Mushrooms tile; CF-MUS-0051 | Ricordea Yuma |
+| IMG_6928.jpeg (fish/) | `public/photos/blue-tangs.jpg` | Marine fish tile; Regal Blue Tang (*Paracanthurus hepatus*) | Regal Blue Tang |
+| IMG_6929.jpeg (fish/) | `public/photos/yellow-watchman-goby.jpg` | Yellow Watchman Goby (*Cryptocentrus cinctus*) | Yellow Watchman Goby |
+| IMG_6930.jpeg (inverts/) | `public/photos/electric-blue-hermit-crabs.jpg` | Invertebrates tile; Electric Blue Hermit Crab (*Calcinus elegans*) | Electric Blue Hermit Crab |
+| IMG_6927.jpeg (dry-goods/) | `public/photos/nyos-quantum-skimmer.jpg` | Nyos Quantum Protein Skimmer (model TBC) | Image carries a tiled Coral Fanatics watermark; an unwatermarked version is recommended. If it is a manufacturer image, confirm usage permission |
 
 Prices, sizes and notes for these pieces remain SAMPLE values. Web copies are resized (max 2000px), converted to sRGB and stripped of metadata; no colour or saturation changes were made. No GPS data was present in the originals.
