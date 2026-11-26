@@ -75,7 +75,7 @@ const species: Record<string, SpeciesSeed> = {
   "acan-lord": { speciesSlug: "acan-lord", species: "Acan Lord", scientificName: "Micromussa lordhowensis", type: "lps", subType: "Acanthastrea", lighting: "Low", flow: "Low", placement: "Lower", care: "Beginner", growth: "Slow", colours: ["Multi-colour", "Pink/Red"] },
   "blastomussa-wellsi": { speciesSlug: "blastomussa-wellsi", species: "Blastomussa Wellsi", scientificName: "Blastomussa wellsi", type: "lps", subType: "Blastomussa", lighting: "Low", flow: "Low", placement: "Lower", care: "Beginner", growth: "Slow", colours: ["Pink/Red"] },
   // Species below were added to match real shop photos (26 Nov 2026).
-  // Names are best guesses from the photos and must be confirmed by the shop.
+  // Names accepted by the owner for now; may be refined with real product data.
   "orange-teal-chalice": { speciesSlug: "orange-teal-chalice", species: "Orange & Teal Chalice", scientificName: "Echinophyllia sp.", type: "lps", subType: "Chalice", lighting: "Low", flow: "Low–Medium", placement: "Lower", care: "Intermediate", growth: "Slow", colours: ["Orange/Yellow", "Green", "Multi-colour"] },
   "green-gold-acropora": { speciesSlug: "green-gold-acropora", species: "Green & Gold Acropora", scientificName: "Acropora sp.", type: "sps", subType: "Acropora", lighting: "High", flow: "Medium–High", placement: "Upper", care: "Expert", growth: "Moderate", colours: ["Green", "Orange/Yellow"] },
   "lime-acropora": { speciesSlug: "lime-acropora", species: "Lime Acropora", scientificName: "Acropora sp.", type: "sps", subType: "Acropora", lighting: "High", flow: "Medium–High", placement: "Upper", care: "Expert", growth: "Moderate", colours: ["Green", "Orange/Yellow"] },
@@ -182,8 +182,8 @@ export interface Product {
 }
 
 export const products: Product[] = [
-  // Products with real shop photographs (26 Nov 2026). Prices, stock and
-  // variants are SAMPLE values; species identified from the photos.
+  // Products with real shop photographs (26 Nov 2026). Names accepted by the
+  // owner for now; prices, stock and variants are SAMPLE values.
   {
     slug: "regal-blue-tang", name: "Regal Blue Tang", scientificName: "Paracanthurus hepatus", section: "fish", subCategory: "Tangs",
     variants: [{ id: "rbt-s", name: "Small ~5 cm", priceCents: 6800, stock: 6 }, { id: "rbt-m", name: "Medium ~8 cm", priceCents: 9800, stock: 3 }],

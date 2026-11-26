@@ -23,9 +23,11 @@ Rules:
 | Q11 | Store address, hours, phone, socials | "[Address TBC]", "[Hours TBC]", "[Phone TBC]"; social icons hidden until URLs are provided | Footer, Visit block | ☐ |
 | Q12 | Brand story copy | Lorem-free neutral draft marked "[DRAFT COPY: to be written with the owner]" | Homepage G, Our Story | ☐ |
 
-## Photo-to-specimen mapping (names to confirm with the shop)
+## Photo-to-specimen mapping
 
-| Original file | Web file | Used as | Name given (best guess) |
+Names accepted by the owner for now (26 Nov 2026); they can be refined when real product data is entered.
+
+| Original file | Web file | Used as | Name (accepted for now) |
 |---|---|---|---|
 | IMG_6923.jpeg | `public/photos/acropora-lime.jpg` | Homepage hero; CF-SPS-0146 | Lime Acropora |
 | IMG_6924.jpeg | `public/photos/acropora-green-yellow-polyps.jpg` | SPS tile; CF-SPS-0145 | Green & Gold Acropora |
