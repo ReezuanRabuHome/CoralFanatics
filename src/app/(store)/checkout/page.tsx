@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Lock, Store, Truck } from "lucide-react";
 import { useBag } from "@/components/store/bag";
-import { PhotoPlaceholder } from "@/components/PhotoPlaceholder";
+import { Photo } from "@/components/Photo";
 import { formatPrice } from "@/lib/money";
 import { fulfilment, policies, store } from "@/config/placeholders";
 
@@ -165,7 +165,7 @@ export default function CheckoutPage() {
             <ul className="mt-4">
               {lines.map((l) => (
                 <li key={l.key} className="flex items-center gap-4 border-b border-hairline py-4">
-                  <div className="w-16 shrink-0 overflow-hidden rounded-xl"><PhotoPlaceholder label={l.photoLabel} tone={l.line.kind === "specimen" ? "specimen" : "white"} compact /></div>
+                  <div className="w-16 shrink-0 overflow-hidden rounded-xl"><Photo src={l.photo} alt={l.photoLabel} tone={l.line.kind === "specimen" ? "specimen" : "white"} compact sizes="64px" /></div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-[15px] font-semibold">{l.title}</p>
                     <p className="t-small text-ink-2">{l.subtitle}{l.qty > 1 ? ` × ${l.qty}` : ""}</p>

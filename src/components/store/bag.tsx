@@ -10,7 +10,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { X, Minus, Plus, Check } from "lucide-react";
 import { getProduct, getSpecimen, productHref, specimenHref } from "@/data/sample";
 import { formatPrice } from "@/lib/money";
-import { PhotoPlaceholder } from "@/components/PhotoPlaceholder";
+import { Photo } from "@/components/Photo";
 
 export type BagLine =
   | { kind: "specimen"; code: string }
@@ -27,6 +27,7 @@ interface ResolvedLine {
   maxQty: number;
   isLivestock: boolean;
   photoLabel: string;
+  photo?: string;
 }
 
 interface BagCtx {
@@ -55,7 +56,7 @@ function resolve(l: BagLine): ResolvedLine | null {
     if (!s) return null;
     return {
       key: lineKey(l), line: l, title: s.species, subtitle: s.code, href: specimenHref(s),
-      unitCents: s.priceCents, qty: 1, maxQty: 1, isLivestock: true, photoLabel: `${s.species} ${s.code}`,
+      unitCents: s.priceCents, qty: 1, maxQty: 1, isLivestock: true, photoLabel: `${s.species} ${s.code}`, photo: s.photo,
     };
   }
   const p = getProduct(l.slug);
@@ -64,7 +65,7 @@ function resolve(l: BagLine): ResolvedLine | null {
   return {
     key: lineKey(l), line: l, title: p.name, subtitle: p.variants.length > 1 ? v.name : (p.brand ?? v.name),
     href: productHref(p), unitCents: v.priceCents, qty: Math.min(l.qty, v.stock), maxQty: v.stock,
-    isLivestock: p.isLivestock, photoLabel: p.name,
+    isLivestock: p.isLivestock, photoLabel: p.name, photo: p.photo,
   };
 }
 
@@ -192,7 +193,7 @@ function BagDrawer() {
               {lines.map((l) => (
                 <li key={l.key} className="flex gap-4 py-4">
                   <Link href={l.href} className="w-20 shrink-0" onClick={() => setOpen(false)}>
-                    <PhotoPlaceholder label={l.photoLabel} tone={l.line.kind === "specimen" ? "specimen" : "light"} compact />
+                    <Photo src={l.photo} alt={l.photoLabel} tone={l.line.kind === "specimen" ? "specimen" : "light"} compact rounded sizes="80px" />
                   </Link>
                   <div className="flex min-w-0 flex-1 flex-col gap-1">
                     <div className="flex justify-between gap-3">
