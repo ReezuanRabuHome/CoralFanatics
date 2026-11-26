@@ -1,0 +1,224 @@
+@import "tailwindcss";
+@import "@fontsource-variable/manrope";
+@import "@fontsource-variable/inter";
+
+/*
+ * Reef design system tokens (docs/planning/02-design-system.md).
+ * Gold and orange were sampled from the supplied logo (Brand Audit §4).
+ */
+@theme {
+  --color-ocean-950: #061820;
+  --color-ocean-900: #09212c;
+  --color-ocean-800: #102b38;
+  --color-ocean-700: #1a3a49;
+  --color-ocean-600: #2a5062;
+  --color-ocean-300: #8fa6b0;
+  --color-ocean-100: #dce5e8;
+
+  --color-pearl-50: #ffffff;
+  --color-pearl-100: #f5f3ed;
+  --color-pearl-200: #ece9e1;
+  --color-pearl-300: #e2e7e7;
+
+  --color-ink-900: #17272e;
+  --color-ink-600: #5f6e75;
+  --color-ink-400: #718087;
+
+  --color-gold-300: #f4dd69;
+  --color-gold-500: #ebc455;
+  --color-gold-600: #b3904c;
+  --color-gold-700: #84661a;
+  --color-gold-100: #f8eed0;
+
+  --color-orange-500: #e2762e;
+  --color-orange-700: #b5520e;
+
+  --color-green-600: #2f7d5b;
+  --color-green-100: #e3f1ea;
+  --color-amber-600: #a86a0c;
+  --color-amber-100: #fbefd9;
+  --color-red-600: #b4412f;
+  --color-red-100: #f8e3df;
+  --color-blue-600: #2a6f8f;
+  --color-blue-100: #e0eef4;
+
+  --font-display: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --ease-reef: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-reef-slow: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-pearl-100 text-ink-900 font-sans;
+    font-feature-settings: "cv11", "ss01";
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-ocean-600);
+    outline-offset: 2px;
+  }
+  .mode-ocean :focus-visible {
+    outline-color: var(--color-gold-500);
+  }
+}
+
+@layer components {
+  /* Typography scale (fluid) */
+  .t-display-xl {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.75rem, 1.6rem + 5vw, 6rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+  }
+  .t-display-l {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.25rem, 1.5rem + 3.4vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+  .t-h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.875rem, 1.4rem + 1.8vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .t-h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 1.3rem + 0.8vw, 2rem);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+  .t-h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.1875rem, 1.1rem + 0.3vw, 1.375rem);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  .t-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .t-id {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap select-none;
+    height: 2.75rem;
+    padding-inline: 1.375rem;
+    font-size: 0.9375rem;
+    transition:
+      background-color 150ms var(--ease-reef),
+      color 150ms var(--ease-reef),
+      border-color 150ms var(--ease-reef),
+      transform 150ms var(--ease-reef);
+  }
+  .btn:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .btn-lg {
+    height: 3.5rem;
+    padding-inline: 2rem;
+    font-size: 1rem;
+  }
+  .btn-sm {
+    height: 2.25rem;
+    padding-inline: 1rem;
+    font-size: 0.875rem;
+  }
+  .btn-primary {
+    @apply bg-ocean-900 text-pearl-50 hover:bg-ocean-700;
+  }
+  .btn-secondary {
+    @apply border border-ink-900 text-ink-900 hover:bg-ink-900 hover:text-pearl-50;
+  }
+  .btn-primary-ocean {
+    @apply bg-pearl-100 text-ocean-900 hover:bg-pearl-50;
+  }
+  .btn-secondary-ocean {
+    @apply border border-pearl-100/60 text-pearl-100 hover:border-pearl-100 hover:bg-pearl-100/10;
+  }
+  .btn-accent {
+    @apply bg-gold-500 text-ocean-900 hover:bg-gold-300;
+  }
+
+  .link-arrow {
+    @apply inline-flex items-center gap-1.5 font-semibold underline-offset-4 hover:underline;
+  }
+
+  /* Layout containers */
+  .container-wide {
+    @apply mx-auto w-full px-4 md:px-6 lg:px-10 xl:px-14;
+    max-width: 1440px;
+  }
+  .container-content {
+    @apply mx-auto w-full px-4 md:px-6 lg:px-10;
+    max-width: 1200px;
+  }
+
+  /* Form fields */
+  .field {
+    @apply block w-full rounded-[10px] border border-pearl-300 bg-pearl-50 px-3.5 text-[15px] text-ink-900 placeholder:text-ink-400;
+    height: 3rem;
+    transition: border-color 150ms var(--ease-reef);
+  }
+  .field:focus {
+    @apply border-ocean-600;
+    outline: 2px solid color-mix(in srgb, var(--color-ocean-600) 25%, transparent);
+    outline-offset: 0;
+  }
+  .label {
+    @apply mb-1.5 block text-[13px] font-medium text-ink-900;
+  }
+}
+
+/* Scroll reveal (homepage only); disabled for reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}

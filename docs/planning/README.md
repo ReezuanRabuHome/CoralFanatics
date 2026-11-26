@@ -1,6 +1,6 @@
 # Coral Fanatics — Design & Architecture Plan
 
-**Status:** recommendations **approved** (26 Nov 2026). Logo received and brand audit updated. Open business questions are deferred and tracked as placeholders in [placeholders.md](./placeholders.md). Next: Phase 1 visual prototype.
+**Status:** recommendations **approved** (26 Nov 2026). Logo received and brand audit updated. Open business questions are deferred and tracked as placeholders in [placeholders.md](./placeholders.md). **Phase 1 visual prototype built** (see the root README for pages); awaiting design approval.
 **Date:** 26 Nov 2026
 
 | # | Deliverable | File |
