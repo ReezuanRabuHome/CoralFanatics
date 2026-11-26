@@ -2,16 +2,25 @@
 
 import { useState } from "react";
 import { Check, Copy } from "lucide-react";
-import { PhotoPlaceholder } from "@/components/PhotoPlaceholder";
+import { Photo } from "@/components/Photo";
 
 /** Large single image with quiet dot pagination. */
-export function Gallery({ labels, tone, note }: { labels: string[]; tone: "specimen" | "light" | "white"; note?: string }) {
+export function Gallery({ labels, tone, note, photos = [] }: { labels: string[]; tone: "specimen" | "light" | "white"; note?: string; photos?: string[] }) {
   const [i, setI] = useState(0);
+  // Real photos replace the placeholder slots; with photos we show only those.
+  if (photos.length) labels = photos.map((_, n) => labels[n] ?? `Photo ${n + 1}`);
   return (
     <div className="lg:sticky lg:top-20">
       <div className="relative overflow-hidden rounded-[28px]">
-        <PhotoPlaceholder label={labels[i] ?? ""} tone={tone} className={tone === "white" ? "!bg-mist" : ""} />
-        {note && <p className={`absolute top-5 right-6 text-[12px] ${tone === "specimen" ? "text-white/60" : "text-ink-2"}`}>{note}</p>}
+        <Photo
+          src={photos[i]}
+          alt={labels[i] ?? ""}
+          tone={tone}
+          className={tone === "white" ? "!bg-mist" : ""}
+          sizes="(min-width: 1024px) 55vw, 100vw"
+          priority
+        />
+        {note && <p className="absolute top-4 right-4 rounded-full bg-black/45 px-3 py-1 text-[12px] font-medium text-white/90 backdrop-blur-md">{note}</p>}
       </div>
       {labels.length > 1 && (
         <div className="mt-5 flex justify-center gap-2.5" role="tablist" aria-label="Images">

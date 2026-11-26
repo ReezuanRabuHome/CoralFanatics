@@ -34,6 +34,8 @@ export interface Specimen {
   notes: string;
   listedDaysAgo: number;
   tank: string;
+  /** Real Coral Fanatics photograph (public/photos), if supplied. */
+  photo?: string;
 }
 
 export const coralTypes: Record<CoralType, { label: string; title: string; eyebrow: string; blurb: string }> = {
@@ -72,6 +74,12 @@ const species: Record<string, SpeciesSeed> = {
   "duncan-coral": { speciesSlug: "duncan-coral", species: "Duncan Coral", scientificName: "Duncanopsammia axifuga", type: "lps", subType: "Duncan", lighting: "Low", flow: "Low–Medium", placement: "Lower", care: "Beginner", growth: "Moderate", colours: ["Green", "Purple"] },
   "acan-lord": { speciesSlug: "acan-lord", species: "Acan Lord", scientificName: "Micromussa lordhowensis", type: "lps", subType: "Acanthastrea", lighting: "Low", flow: "Low", placement: "Lower", care: "Beginner", growth: "Slow", colours: ["Multi-colour", "Pink/Red"] },
   "blastomussa-wellsi": { speciesSlug: "blastomussa-wellsi", species: "Blastomussa Wellsi", scientificName: "Blastomussa wellsi", type: "lps", subType: "Blastomussa", lighting: "Low", flow: "Low", placement: "Lower", care: "Beginner", growth: "Slow", colours: ["Pink/Red"] },
+  // Species below were added to match real shop photos (26 Nov 2026).
+  // Names are best guesses from the photos and must be confirmed by the shop.
+  "orange-teal-chalice": { speciesSlug: "orange-teal-chalice", species: "Orange & Teal Chalice", scientificName: "Echinophyllia sp.", type: "lps", subType: "Chalice", lighting: "Low", flow: "Low–Medium", placement: "Lower", care: "Intermediate", growth: "Slow", colours: ["Orange/Yellow", "Green", "Multi-colour"] },
+  "green-gold-acropora": { speciesSlug: "green-gold-acropora", species: "Green & Gold Acropora", scientificName: "Acropora sp.", type: "sps", subType: "Acropora", lighting: "High", flow: "Medium–High", placement: "Upper", care: "Expert", growth: "Moderate", colours: ["Green", "Orange/Yellow"] },
+  "lime-acropora": { speciesSlug: "lime-acropora", species: "Lime Acropora", scientificName: "Acropora sp.", type: "sps", subType: "Acropora", lighting: "High", flow: "Medium–High", placement: "Upper", care: "Expert", growth: "Moderate", colours: ["Green", "Orange/Yellow"] },
+  "yellow-purple-acropora": { speciesSlug: "yellow-purple-acropora", species: "Yellow & Purple Acropora", scientificName: "Acropora sp.", type: "sps", subType: "Acropora", lighting: "High", flow: "Medium–High", placement: "Upper", care: "Expert", growth: "Moderate", colours: ["Orange/Yellow", "Purple"] },
   "ricordea-florida": { speciesSlug: "ricordea-florida", species: "Ricordea Florida", scientificName: "Ricordea florida", type: "mushrooms", subType: "Ricordea", lighting: "Low", flow: "Low", placement: "Lower", care: "Beginner", growth: "Slow", colours: ["Green", "Orange/Yellow"] },
   "ricordea-yuma": { speciesSlug: "ricordea-yuma", species: "Ricordea Yuma", scientificName: "Ricordea yuma", type: "mushrooms", subType: "Ricordea", lighting: "Medium", flow: "Low", placement: "Middle", care: "Intermediate", growth: "Slow", colours: ["Multi-colour"] },
   "bounce-mushroom": { speciesSlug: "bounce-mushroom", species: "Bounce Mushroom", scientificName: "Rhodactis inchoata", type: "mushrooms", subType: "Rhodactis", lighting: "Low", flow: "Low", placement: "Lower", care: "Expert", growth: "Slow", colours: ["Orange/Yellow", "Pink/Red"] },
@@ -82,6 +90,12 @@ const prefix: Record<CoralType, string> = { sps: "SPS", lps: "LPS", mushrooms: "
 
 // [species, number, price $, status, size cm, days ago, notes]
 const rows: [string, number, number, SpecimenStatus, number, number, string][] = [
+  // Pieces with real photographs (prices, sizes and notes are SAMPLE values)
+  ["lime-acropora", 146, 150, "AVAILABLE", 6, 0, "Bright lime colony with gold polyps."],
+  ["green-gold-acropora", 145, 220, "AVAILABLE", 12, 0, "Large branching colony, green base with gold polyps."],
+  ["yellow-purple-acropora", 144, 65, "AVAILABLE", 2, 1, "Small frag on plug. Yellow tips over a purple base."],
+  ["hammer-coral", 89, 280, "AVAILABLE", 15, 0, "Large colony with spotted lime tips."],
+  ["orange-teal-chalice", 90, 180, "AVAILABLE", 10, 0, "Layered plates in orange and teal."],
   ["fox-flame-acropora", 142, 85, "AVAILABLE", 3, 0, "Bright green base with two healthy growth tips."],
   ["fox-flame-acropora", 143, 95, "AVAILABLE", 4, 0, "Fuller colony with strong orange polyp extension."],
   ["fox-flame-acropora", 139, 75, "RESERVED", 3, 2, "Compact frag, encrusted on plug."],
@@ -100,7 +114,7 @@ const rows: [string, number, number, SpecimenStatus, number, number, string][] =
   ["blastomussa-wellsi", 84, 65, "RESERVED", 4, 4, "Eight polyps, deep red."],
   ["hammer-coral", 83, 95, "SOLD", 5, 8, "Single head."],
   ["ricordea-florida", 52, 45, "AVAILABLE", 3, 0, "Single polyp, orange centre."],
-  ["ricordea-yuma", 51, 120, "AVAILABLE", 3, 1, "Multi-colour Yuma, full tentacles."],
+  ["ricordea-yuma", 51, 120, "AVAILABLE", 4, 0, "Orange-tipped Yuma with a green mouth."],
   ["bounce-mushroom", 50, 220, "AVAILABLE", 3, 2, "Single bounce, strong bubble pattern."],
   ["jawbreaker-mushroom", 49, 55, "AVAILABLE", 4, 3, "Striped purple and green."],
   ["ricordea-florida", 48, 40, "AVAILABLE", 3, 5, "Green single polyp."],
@@ -119,6 +133,17 @@ export const specimens: Specimen[] = rows.map(([slug, n, price, status, sizeCm, 
     tank: `Rack ${String.fromCharCode(65 + (i % 4))}${(i % 6) + 1}`,
   };
 });
+
+/** Real photographs supplied by Coral Fanatics, keyed by specimen ID. */
+const photos: Record<string, string> = {
+  "CF-SPS-0146": "/photos/acropora-lime.jpg",
+  "CF-SPS-0145": "/photos/acropora-green-yellow-polyps.jpg",
+  "CF-SPS-0144": "/photos/acropora-frag-yellow-purple.jpg",
+  "CF-LPS-0089": "/photos/hammer-green.jpg",
+  "CF-LPS-0090": "/photos/chalice-orange-teal.jpg",
+  "CF-MUS-0051": "/photos/ricordea-yuma-orange.jpg",
+};
+for (const s of specimens) s.photo = photos[s.code];
 
 export function getSpecimen(code: string): Specimen | undefined {
   return specimens.find((s) => s.code.toLowerCase() === code.toLowerCase());

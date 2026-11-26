@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PhotoPlaceholder } from "@/components/PhotoPlaceholder";
+import { Photo } from "@/components/Photo";
 import { fromPrice, productHref, specimenHref, totalStock, type Product, type Specimen } from "@/data/sample";
 import { formatPriceShort } from "@/lib/money";
 
@@ -17,8 +18,13 @@ export function SpecimenCard({ s, className = "" }: { s: Specimen; className?: s
   const note = s.status === "RESERVED" ? "Reserved in checkout" : sold ? "Sold" : null;
   return (
     <Link href={specimenHref(s)} className={`card group block overflow-hidden ${className}`}>
-      <div className={sold ? "opacity-50" : ""}>
-        <PhotoPlaceholder label={`${s.species}, specimen ${s.code}, top view`} tone="specimen" />
+      <div className={`overflow-hidden ${sold ? "opacity-50" : ""}`}>
+        <Photo
+          src={s.photo}
+          alt={`${s.species}, specimen ${s.code}`}
+          sizes="(min-width: 1024px) 24vw, (min-width: 640px) 40vw, 72vw"
+          imgClassName="transition-transform duration-700 ease-[var(--ease-reef-slow)] group-hover:scale-[1.03]"
+        />
       </div>
       <div className="px-5 pt-4 pb-5">
         {s.listedDaysAgo <= 1 && !sold && <p className="mb-1 text-[12px] font-medium text-coral-ink">New</p>}

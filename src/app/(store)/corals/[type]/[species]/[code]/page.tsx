@@ -42,7 +42,7 @@ export default async function SpecimenPage({ params }: { params: Params }) {
     <>
       <div className="container-wide pt-20 pb-16 lg:pt-24">
         <nav aria-label="Breadcrumb" className="t-small mb-6 flex items-center gap-1 text-ink-2">
-          <Link href={`/corals/${s.type}`} className="hover:text-ink hover:underline">{type.label} Corals</Link>
+          <Link href={`/corals/${s.type}`} className="hover:text-ink hover:underline">{s.type === "mushrooms" ? "Mushrooms" : `${type.label} Corals`}</Link>
           <ChevronRight className="size-3.5" aria-hidden />
           <span>{s.subType}</span>
         </nav>
@@ -52,6 +52,7 @@ export default async function SpecimenPage({ params }: { params: Params }) {
             <Gallery
               tone="specimen"
               note="Actual specimen"
+              photos={s.photo ? [s.photo] : []}
               labels={[`${s.code}, top-down at the photo station`, `${s.code}, angled side view`, `${s.code}, with scale reference`]}
             />
           </div>

@@ -9,7 +9,7 @@ Rules:
 
 | # | Question | Placeholder used | Where it shows | Resolved? |
 |---|---|---|---|---|
-| Q1 | Shop photography | Neutral blocks labelled "PHOTO PLACEHOLDER: {shot description}" (ocean on dark sections, pearl on light) | Everywhere | ☐ |
+| Q1 | Shop photography | 6 real coral photos received 26 Nov 2026 (see mapping below). Everything else still uses a flat placeholder with a small "Photo placeholder" label. Still needed: fish, invertebrates, dry goods, shop interior/team, a wide high-resolution hero shot | Everywhere without a real photo | Partly |
 | Q1b | Vector logo | Interim derived PNGs (`assets/brand/`) | Nav, footer, favicon | ☐ |
 | Q2 | GST registration / price display | Prices shown without a GST statement; checkout line "GST: [to be confirmed]" | PDP, checkout | ☐ |
 | Q3 | Livestock delivery method, days, fees | "Delivery in Singapore: [schedule TBC]"; fee shown as `S$[TBC]`; prototype uses S$15.00 flat for layout only | Service strip, PDP, checkout | ☐ |
@@ -22,3 +22,16 @@ Rules:
 | Q10 | Staff count / permissions | Default matrix from Deliverable 6 (staff: no revenue, no price changes) | Admin | ☐ |
 | Q11 | Store address, hours, phone, socials | "[Address TBC]", "[Hours TBC]", "[Phone TBC]"; social icons hidden until URLs are provided | Footer, Visit block | ☐ |
 | Q12 | Brand story copy | Lorem-free neutral draft marked "[DRAFT COPY: to be written with the owner]" | Homepage G, Our Story | ☐ |
+
+## Photo-to-specimen mapping (names to confirm with the shop)
+
+| Original file | Web file | Used as | Name given (best guess) |
+|---|---|---|---|
+| IMG_6923.jpeg | `public/photos/acropora-lime.jpg` | Homepage hero; CF-SPS-0146 | Lime Acropora |
+| IMG_6924.jpeg | `public/photos/acropora-green-yellow-polyps.jpg` | SPS tile; CF-SPS-0145 | Green & Gold Acropora |
+| IMG_6706.jpeg | `public/photos/acropora-frag-yellow-purple.jpg` | CF-SPS-0144 | Yellow & Purple Acropora (frag) |
+| IMG_6926.jpeg | `public/photos/hammer-green.jpg` | LPS tile; CF-LPS-0089 | Hammer Coral |
+| IMG_6925.jpeg | `public/photos/chalice-orange-teal.jpg` | CF-LPS-0090 | Orange & Teal Chalice (*Echinophyllia* sp.?) — least certain |
+| IMG_6770.jpeg | `public/photos/ricordea-yuma-orange.jpg` | Mushrooms tile; CF-MUS-0051 | Ricordea Yuma |
+
+Prices, sizes and notes for these pieces remain SAMPLE values. Web copies are resized (max 2000px), converted to sRGB and stripped of metadata; no colour or saturation changes were made. No GPS data was present in the originals.

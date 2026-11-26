@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { PhotoPlaceholder } from "@/components/PhotoPlaceholder";
+import { Photo } from "@/components/Photo";
 import { ProductCard, Shelf, SpecimenCard } from "@/components/store/cards";
 import { Badge } from "@/components/brand/Badge";
 import { coralTypes, products, specimens, type CoralType } from "@/data/sample";
@@ -15,6 +16,12 @@ function More({ href, children, className = "" }: { href: string; children: Reac
   );
 }
 
+const coralPhotos: Record<CoralType, string> = {
+  sps: "/photos/acropora-green-yellow-polyps.jpg",
+  lps: "/photos/hammer-green.jpg",
+  mushrooms: "/photos/ricordea-yuma-orange.jpg",
+};
+
 const coralLines: Record<CoralType, string> = {
   sps: "Colour and structure, piece by piece.",
   lps: "Fleshy, flowing, full of movement.",
@@ -24,7 +31,8 @@ const coralLines: Record<CoralType, string> = {
 export default function HomePage() {
   const newest = specimens
     .filter((s) => s.status === "AVAILABLE")
-    .sort((a, b) => a.listedDaysAgo - b.listedDaysAgo)
+    // Featured selection: photographed pieces first, then newest.
+    .sort((a, b) => Number(!a.photo) - Number(!b.photo) || a.listedDaysAgo - b.listedDaysAgo)
     .slice(0, 8);
   const gear = products.filter((p) => !p.isLivestock);
 
@@ -32,13 +40,19 @@ export default function HomePage() {
     <>
       {/* Hero */}
       <section className="on-ocean relative isolate flex h-[100svh] max-h-[960px] min-h-[640px] flex-col bg-ocean-deep text-white">
-        <PhotoPlaceholder
-          tone="specimen"
-          ratio="auto"
-          labelAt="corner"
-          className="absolute inset-0 -z-10 h-full !bg-ocean-deep"
-          label="Hero: wide display-tank photograph or 10–20 s muted video loop. 16:9 desktop, 4:5 mobile crop, darker area at the top for the headline."
-        />
+        {/* Photo sits below the headline and fades up into the water, so text never sits on bright coral */}
+        <div className="absolute inset-x-0 top-[58%] bottom-0 -z-10 lg:top-[46%]">
+          <Photo
+            src="/photos/acropora-lime.jpg"
+            alt="Lime Acropora photographed in the Coral Fanatics shop"
+            ratio="auto"
+            className="h-full !bg-ocean-deep"
+            sizes="100vw"
+            priority
+            position="50% 35%"
+          />
+          <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-ocean-deep to-transparent" />
+        </div>
         <div className="container-content flex flex-col items-center pt-32 text-center lg:pt-40">
           <h1 className="t-hero max-w-[14ch]">A world beneath the surface.</h1>
           <p className="t-sub mt-5 max-w-[34ch] text-white/75">
@@ -46,7 +60,7 @@ export default function HomePage() {
           </p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
             <Link href="/corals/sps" className="btn btn-primary">Explore the collection</Link>
-            <More href="/new-arrivals">See new arrivals</More>
+            <More href="/new-arrivals" className="!text-white font-medium">See new arrivals</More>
           </div>
         </div>
       </section>
@@ -64,11 +78,21 @@ export default function HomePage() {
             const n = specimens.filter((s) => s.type === t && s.status === "AVAILABLE").length;
             return (
               <Link key={t} href={`/corals/${t}`} className="on-ocean group relative flex aspect-[4/5] flex-col items-center overflow-hidden rounded-[28px] bg-[#06090b] pt-10 text-center text-white">
-                <PhotoPlaceholder tone="specimen" ratio="auto" className="absolute inset-0 h-full" label={`One strong real ${coralTypes[t].label} coral, 4:5`} />
+                <div className="absolute inset-0">
+                  <Photo
+                    src={coralPhotos[t]}
+                    alt={`${coralTypes[t].label} coral from the shop`}
+                    ratio="auto"
+                    className="h-full"
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    imgClassName="transition-transform duration-700 ease-[var(--ease-reef-slow)] group-hover:scale-[1.03]"
+                  />
+                  <div className="absolute inset-x-0 top-0 h-[62%] bg-gradient-to-b from-black/90 via-black/60 to-transparent" />
+                </div>
                 <div className="relative px-6">
                   <h3 className="t-tile">{coralTypes[t].label}</h3>
                   <p className="mt-2 text-[17px] text-white/70">{coralLines[t]}</p>
-                  <p className="mt-4 inline-flex items-center gap-0.5 text-[17px] text-reef-light group-hover:underline">
+                  <p className="mt-4 inline-flex items-center gap-0.5 text-[17px] font-medium text-white group-hover:underline">
                     Shop {n} pieces <ChevronRight className="size-4" strokeWidth={2} />
                   </p>
                 </div>
