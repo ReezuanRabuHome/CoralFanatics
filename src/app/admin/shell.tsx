@@ -7,12 +7,12 @@ import { ArrowUpRight, BarChart3, Boxes, Diamond, LayoutDashboard, MoreHorizonta
 
 const nav = [
   { label: "Overview", href: "/admin", icon: LayoutDashboard },
-  { label: "Orders", href: "/admin/orders/CF-10042", icon: Receipt, badge: 3 },
+  { label: "Orders", href: "/admin/orders", icon: Receipt, badge: 3 },
   { label: "Livestock", href: "/admin/livestock", icon: Diamond },
-  { label: "Products", href: "/admin#products", icon: Package },
-  { label: "Inventory", href: "/admin#inventory", icon: Boxes },
-  { label: "Customers", href: "/admin#customers", icon: Users },
-  { label: "Reports", href: "/admin#reports", icon: BarChart3 },
+  { label: "Products", href: "/admin/products", icon: Package },
+  { label: "Inventory", href: "/admin/inventory", icon: Boxes },
+  { label: "Customers", href: "/admin/customers", icon: Users },
+  { label: "Reports", href: "/admin/reports", icon: BarChart3 },
 ];
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
@@ -49,7 +49,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             </Link>
           ))}
           <div className="my-3 border-t border-pearl-300" />
-          <Link href="/admin#settings" className="flex h-9 items-center gap-3 rounded-md px-3 font-medium hover:bg-pearl-100"><Settings className="size-4" strokeWidth={1.75} />Settings</Link>
+          <Link href="/admin/settings" className="flex h-9 items-center gap-3 rounded-md px-3 font-medium hover:bg-pearl-100"><Settings className="size-4" strokeWidth={1.75} />Settings</Link>
           <Link href="/" className="flex h-9 items-center gap-3 rounded-md px-3 font-medium hover:bg-pearl-100"><ArrowUpRight className="size-4" strokeWidth={1.75} />View store</Link>
         </nav>
         <div className="border-t border-pearl-300 p-4 text-xs text-ink-600">Signed in as <span className="font-semibold text-ink-900">Owner (sample)</span></div>

@@ -22,6 +22,17 @@ npm run build && npm start   # production build
 npm run typecheck
 ```
 
+## Checking the shopper journeys
+
+`tests/e2e/consumer-journeys.cjs` walks the site as a shopper would (browse, filter, add to bag,
+stock limits, checkout validation, payment hand-off, confirmation, order lookup, search, 404s) on
+phone and desktop, and fails on any JavaScript error.
+
+```bash
+npm run build && npm start                                      # terminal 1
+BASE_URL=http://localhost:3000 node tests/e2e/consumer-journeys.cjs   # terminal 2 (needs Playwright + Chromium)
+```
+
 ## Prototype pages
 
 | Storefront | Admin |
@@ -31,7 +42,8 @@ npm run typecheck
 | `/corals/sps/fox-flame-acropora/cf-sps-0142` coral specimen | `/admin/orders/CF-10042` order detail |
 | `/marine-life/fish/ocellaris-clownfish` fish | |
 | `/equipment/reef-salt-mix` dry goods with variants | |
-| `/new-arrivals`, `/checkout` (UI only, no payment) | |
+| `/new-arrivals`, `/search`, `/our-story`, `/policies/*` | `/admin/orders` list |
+| `/checkout` → `/checkout/confirmation` (simulated payment), `/order-lookup` | Other admin sections: "built in Phase 2" pages |
 
 ## Where things live
 

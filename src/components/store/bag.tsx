@@ -6,7 +6,7 @@
  * server-authoritative prices and stock (Deliverables 8 & 9).
  */
 import Link from "next/link";
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { X, Minus, Plus, Check } from "lucide-react";
 import { getProduct, getSpecimen, productHref, specimenHref } from "@/data/sample";
 import { formatPrice } from "@/lib/money";
@@ -40,7 +40,12 @@ interface BagCtx {
   add: (line: BagLine) => void;
   setQty: (key: string, qty: number) => void;
   remove: (key: string) => void;
+  clear: () => void;
   has: (key: string) => boolean;
+  /** Short message shown in the drawer, e.g. when a quantity was capped at stock. */
+  notice: string | null;
+  /** Increments on every add, so the bag icon can animate. */
+  addedTick: number;
 }
 
 const Ctx = createContext<BagCtx | null>(null);
@@ -89,20 +94,37 @@ export function BagProvider({ children }: { children: React.ReactNode }) {
     }
   }, [raw]);
 
+  const [notice, setNotice] = useState<string | null>(null);
+  const [addedTick, setAddedTick] = useState(0);
+
+  // Latest bag contents, readable synchronously inside add().
+  const rawRef = useRef(raw);
+  rawRef.current = raw;
+
   const add = useCallback((line: BagLine) => {
-    setRaw((prev) => {
-      const k = lineKey(line);
-      const existing = prev.find((p) => lineKey(p) === k);
-      if (existing) {
-        if (existing.kind === "variant" && line.kind === "variant") {
-          return prev.map((p) => (lineKey(p) === k && p.kind === "variant" ? { ...p, qty: p.qty + line.qty } : p));
-        }
-        return prev; // a unique specimen can only be in the bag once
-      }
-      return [...prev, line];
-    });
+    const prev = rawRef.current;
+    const k = lineKey(line);
+    const existing = prev.find((p) => lineKey(p) === k);
+    let next = prev;
+    let message: string | null = null;
+    if (line.kind === "variant") {
+      // Never let the bag hold more than is in stock, and say so.
+      const stock = getProduct(line.slug)?.variants.find((v) => v.id === line.variantId)?.stock ?? 0;
+      const current = existing?.kind === "variant" ? existing.qty : 0;
+      const wanted = current + line.qty;
+      const qty = Math.min(wanted, stock);
+      if (wanted > stock) message = `Only ${stock} available, so your bag has the maximum.`;
+      next = existing ? prev.map((p) => (lineKey(p) === k && p.kind === "variant" ? { ...p, qty } : p)) : [...prev, { ...line, qty }];
+    } else if (!existing) {
+      next = [...prev, line]; // a unique specimen can only be in the bag once
+    }
+    setRaw(next);
+    setNotice(message);
+    setAddedTick((t) => t + 1);
     setOpen(true);
   }, []);
+
+  const clear = useCallback(() => setRaw([]), []);
 
   const setQty = useCallback((key: string, qty: number) => {
     setRaw((prev) => prev.map((p) => (lineKey(p) === key && p.kind === "variant" ? { ...p, qty: Math.max(1, qty) } : p)));
@@ -116,10 +138,10 @@ export function BagProvider({ children }: { children: React.ReactNode }) {
       count: lines.reduce((n, l) => n + l.qty, 0),
       subtotalCents: lines.reduce((n, l) => n + l.unitCents * l.qty, 0),
       containsLivestock: lines.some((l) => l.isLivestock),
-      open, setOpen, add, setQty, remove,
+      open, setOpen, add, setQty, remove, clear, notice, addedTick,
       has: (key) => raw.some((p) => lineKey(p) === key),
     };
-  }, [raw, open, add, setQty, remove]);
+  }, [raw, open, add, setQty, remove, clear, notice, addedTick]);
 
   return (
     <Ctx.Provider value={value}>
@@ -151,7 +173,7 @@ export function QtyStepper({ value, max, onChange, size = "md" }: { value: numbe
 }
 
 function BagDrawer() {
-  const { lines, open, setOpen, subtotalCents, setQty, remove } = useBag();
+  const { lines, open, setOpen, subtotalCents, setQty, remove, notice } = useBag();
 
   useEffect(() => {
     if (!open) return;
@@ -189,6 +211,7 @@ function BagDrawer() {
           </div>
         ) : (
           <>
+            {notice && <p role="status" className="mx-5 mt-4 rounded-xl bg-amber-100 px-4 py-3 text-[14px] text-amber-600">{notice}</p>}
             <ul className="flex-1 divide-y divide-pearl-300 overflow-y-auto px-5">
               {lines.map((l) => (
                 <li key={l.key} className="flex gap-4 py-4">

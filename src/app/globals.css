@@ -228,24 +228,104 @@
   }
 }
 
-/* One subtle reveal, homepage only; respects reduced motion. */
+/*
+ * Motion. One easing family, short distances, nothing that loops.
+ * Everything here is switched off for prefers-reduced-motion.
+ */
+html {
+  scroll-behavior: smooth;
+}
+
 @media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .reveal {
-      animation: reveal linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 30%;
-    }
+  /* Page entrance: a short fade after each navigation (template.tsx).
+     Opacity only, and fill "backwards", so no transform or stacking context is
+     left behind to break fixed elements (mobile purchase bars, filter sheet). */
+  .page-enter {
+    animation: page-enter 450ms var(--ease-reef) backwards;
   }
-  @keyframes reveal {
+  @keyframes page-enter {
     from {
       opacity: 0;
-      transform: translateY(24px);
     }
-    to {
-      opacity: 1;
-      transform: none;
+  }
+
+  /* Hero: photo eases in and settles; headline lines arrive in sequence. */
+  .hero-photo {
+    animation: hero-photo 1800ms var(--ease-reef-slow) both;
+  }
+  @keyframes hero-photo {
+    from {
+      opacity: 0;
+      transform: scale(1.06);
     }
+  }
+  .hero-line {
+    animation: rise 900ms var(--ease-reef-slow) both;
+    animation-delay: calc(var(--i, 0) * 110ms + 150ms);
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+  }
+
+  /* Scroll-linked effects (Chrome, Edge, Safari 26+). Others simply show content. */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+    /* Slight parallax: hero photo drifts slower than the page. */
+    .hero-parallax {
+      animation: parallax linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+    @keyframes parallax {
+      to {
+        transform: translateY(12%);
+      }
+    }
+  }
+
+  /* Bag count bump when something is added. */
+  .bump {
+    animation: bump 420ms var(--ease-reef-slow);
+  }
+  @keyframes bump {
+    40% {
+      transform: scale(1.35);
+    }
+  }
+}
+
+/* Image fade-in once loaded (Photo.tsx), so photos never pop in. */
+.img-fade {
+  opacity: 0;
+  transition:
+    opacity 600ms var(--ease-reef),
+    transform 700ms var(--ease-reef-slow);
+}
+.img-fade[data-loaded="true"] {
+  opacity: 1;
+}
+
+/* Form validation styling: only after the shopper has interacted. */
+.field:user-invalid {
+  border-color: var(--color-red-600);
+}
+.field:user-invalid:focus {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-red-600) 15%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .img-fade {
+    transition: none;
   }
 }
 

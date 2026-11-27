@@ -1,12 +1,9 @@
 import { notFound } from "next/navigation";
 import { ProductListingPage } from "@/components/store/ProductPages";
 
-export function generateStaticParams() {
-  return [{ section: "fish" }, { section: "invertebrates" }];
-}
-
-export default async function Page({ params }: { params: Promise<{ section: string }> }) {
+export default async function Page({ params, searchParams }: { params: Promise<{ section: string }>; searchParams: Promise<{ sub?: string }> }) {
   const { section } = await params;
+  const { sub } = await searchParams;
   if (section !== "fish" && section !== "invertebrates") notFound();
-  return <ProductListingPage section={section} />;
+  return <ProductListingPage section={section} sub={sub} />;
 }

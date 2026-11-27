@@ -19,12 +19,15 @@ export const navItems = [
 /** Thin, translucent global navigation. Dark over the homepage hero, light elsewhere. */
 export function Header() {
   const pathname = usePathname();
-  const [overHero, setOverHero] = useState(true);
-  const dark = pathname === "/" && overHero;
+  // Dark bar only while a dark hero (marked data-dark-hero) sits behind it.
+  // The homepage starts dark to avoid a flash before the first measurement.
+  const [dark, setDark] = useState(pathname === "/");
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
-    // Dark bar only while the homepage hero is behind it.
-    const on = () => setOverHero(window.scrollY < Math.min(window.innerHeight, 960) - 48);
+    const on = () => {
+      const hero = document.querySelector("[data-dark-hero]");
+      setDark(!!hero && hero.getBoundingClientRect().bottom > 48);
+    };
     on();
     window.addEventListener("scroll", on, { passive: true });
     window.addEventListener("resize", on);
@@ -32,8 +35,8 @@ export function Header() {
       window.removeEventListener("scroll", on);
       window.removeEventListener("resize", on);
     };
-  }, []);
-  const { count, setOpen } = useBag();
+  }, [pathname]);
+  const { count, setOpen, addedTick } = useBag();
   useEffect(() => setMenuOpen(false), [pathname]);
 
   const bar = dark && !menuOpen ? "bg-ocean-deep/80 text-white/90" : "bg-white/80 text-ink/85";
@@ -57,7 +60,7 @@ export function Header() {
             <button onClick={() => setOpen(true)} aria-label={`Bag, ${count} items`} className="relative grid size-9 place-items-center opacity-90 hover:opacity-100">
               <ShoppingBag className="size-[17px]" strokeWidth={1.6} />
               {count > 0 && (
-                <span className="tabular absolute right-0.5 bottom-1 grid size-[15px] place-items-center rounded-full bg-current text-[9px] font-semibold">
+                <span key={addedTick} className={`tabular absolute right-0.5 bottom-1 grid size-[15px] place-items-center rounded-full bg-current text-[9px] font-semibold ${addedTick ? "bump" : ""}`}>
                   <span className={dark && !menuOpen ? "text-ocean-deep" : "text-white"}>{count}</span>
                 </span>
               )}
@@ -72,11 +75,18 @@ export function Header() {
 
       {/* Mobile menu: full-screen, large type */}
       <div className={`fixed inset-0 top-12 z-40 bg-white transition-[opacity,visibility] duration-300 md:hidden ${menuOpen ? "visible opacity-100" : "invisible opacity-0"}`}>
-        <nav aria-label="Mobile" className="container-wide flex flex-col pt-6">
-          {navItems.map((n) => (
-            <Link key={n.href} href={n.href} className="py-2.5 text-[28px] font-semibold tracking-[-0.02em]">{n.label}</Link>
+        {/* Remounts on open so the items arrive in sequence */}
+        <nav key={String(menuOpen)} aria-label="Mobile" className="container-wide flex flex-col pt-6">
+          {navItems.map((n, i) => (
+            <Link key={n.href} href={n.href} onClick={() => setMenuOpen(false)} className="hero-line py-2.5 text-[28px] font-semibold tracking-[-0.02em]" style={{ "--i": i * 0.5 - 1.2 } as React.CSSProperties}>
+              {n.label}
+            </Link>
           ))}
-          <div className="t-small mt-10 space-y-1 text-ink-2">
+          <div className="hero-line mt-8 flex flex-col gap-3 text-[17px]" style={{ "--i": 1.5 } as React.CSSProperties}>
+            <Link href="/search" onClick={() => setMenuOpen(false)} className="text-ink-2">Search</Link>
+            <Link href="/order-lookup" onClick={() => setMenuOpen(false)} className="text-ink-2">Check an order</Link>
+          </div>
+          <div className="t-small hero-line mt-10 space-y-1 text-ink-2" style={{ "--i": 2 } as React.CSSProperties}>
             <p className="font-medium text-ink">Visit the shop</p>
             <p>{store.address}</p>
             <p>{store.hours}</p>

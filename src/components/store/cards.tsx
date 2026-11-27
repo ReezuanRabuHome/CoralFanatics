@@ -63,23 +63,4 @@ export function ProductCard({ p, className = "" }: { p: Product; className?: str
   );
 }
 
-/** Horizontal scrolling shelf with a two-tone heading. */
-export function Shelf({ title, tagline, children, action }: { title: string; tagline?: string; children: React.ReactNode; action?: React.ReactNode }) {
-  return (
-    <section className="py-14 lg:py-20">
-      <div className="container-wide mb-6 flex items-end justify-between gap-6">
-        <h2 className="t-title max-w-3xl">
-          {title}
-          {tagline && <span className="text-ink-2"> {tagline}</span>}
-        </h2>
-        {action && <div className="hidden shrink-0 pb-1 md:block">{action}</div>}
-      </div>
-      <div className="no-scrollbar overflow-x-auto scroll-smooth">
-        <ul className="container-wide flex snap-x snap-mandatory gap-5 pb-10 [&>li]:w-[72%] [&>li]:shrink-0 [&>li]:snap-start [&>li>a]:h-full sm:[&>li]:w-[40%] lg:[&>li]:w-[23.5%]">
-          {children}
-        </ul>
-      </div>
-      {action && <div className="container-wide -mt-4 md:hidden">{action}</div>}
-    </section>
-  );
-}
+export { Shelf } from "@/components/store/Shelf";

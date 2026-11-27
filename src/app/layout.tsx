@@ -14,8 +14,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-SG">
+    <html lang="en-SG" data-scroll-behavior="smooth">
       <body className="min-h-dvh">
+        <noscript>
+          <style>{`.img-fade{opacity:1}`}</style>
+        </noscript>
         {children}
         {/* Prototype marker: placeholders.md requires placeholders to be identifiable outside production. */}
         <div className="pointer-events-none fixed right-3 bottom-3 z-[70] rounded-full bg-black/75 px-3 py-1.5 text-[11px] font-medium text-white/90 backdrop-blur max-lg:bottom-20">

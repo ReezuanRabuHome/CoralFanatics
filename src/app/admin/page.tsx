@@ -21,9 +21,9 @@ export default function AdminOverview() {
         <h2 className="border-b border-pearl-300 px-5 py-3 font-semibold">Needs attention</h2>
         <ul className="divide-y divide-pearl-300">
           {[
-            ["3 orders to fulfil", "1 collection today · 2 deliveries Sat", "/admin/orders/CF-10042"],
+            ["3 orders to fulfil", "1 collection today · 2 deliveries Sat", "/admin/orders"],
             [`${reserved} specimens reserved in checkout`, "Auto-release after 15 minutes if unpaid", "/admin/livestock"],
-            [`${lowStock.length} low-stock products`, lowStock.map((p) => p.name).join(", "), "/admin#inventory"],
+            [`${lowStock.length} low-stock products`, lowStock.map((p) => p.name).join(", "), "/admin/inventory"],
             ["All specimens have photos", "Placeholder report: 0 published items missing photos (prototype uses placeholders throughout)", "/admin/livestock"],
           ].map(([t, d, href]) => (
             <li key={t}>

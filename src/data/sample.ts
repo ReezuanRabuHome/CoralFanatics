@@ -43,19 +43,19 @@ export const coralTypes: Record<CoralType, { label: string; title: string; eyebr
     label: "SPS",
     title: "SPS corals.",
     eyebrow: "Small-polyp stony",
-    blurb: "Acropora, Montipora and other small-polyp stony corals, chosen for colour and structure.",
+    blurb: "Small-polyp stony corals, including Acropora and Montipora. Every piece is sold individually.",
   },
   lps: {
     label: "LPS",
     title: "LPS corals.",
     eyebrow: "Large-polyp stony",
-    blurb: "Hammers, torches, acans and more. Fleshy, expressive corals with movement.",
+    blurb: "Large-polyp stony corals, including hammers, torches, chalices and acans.",
   },
   mushrooms: {
     label: "Mushrooms",
     title: "Mushrooms.",
     eyebrow: "Corallimorphs",
-    blurb: "Ricordea, Rhodactis and Discosoma. Hardy, vivid and full of character.",
+    blurb: "Ricordea, Rhodactis and Discosoma mushrooms, sold piece by piece.",
   },
 };
 

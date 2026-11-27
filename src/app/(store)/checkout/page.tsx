@@ -7,7 +7,8 @@
  */
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Lock, Store, Truck } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Loader2, Lock, Store, Truck } from "lucide-react";
 import { useBag } from "@/components/store/bag";
 import { Photo } from "@/components/Photo";
 import { formatPrice } from "@/lib/money";
@@ -36,15 +37,16 @@ function Step({ title, children }: { title: string; children: React.ReactNode })
 
 export default function CheckoutPage() {
   const { lines, subtotalCents, containsLivestock } = useBag();
+  const router = useRouter();
+  const [paying, setPaying] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [method, setMethod] = useState<Method>("COLLECTION");
   const [days, setDays] = useState<{ value: string; label: string }[]>([]);
   const [agreed, setAgreed] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   useEffect(() => setDays(nextDays(6)), []);
 
   const deliveryCents = method === "DELIVERY" ? fulfilment.deliveryFeeCents : 0;
   const total = subtotalCents + deliveryCents;
-  const canPay = lines.length > 0 && (!containsLivestock || agreed);
 
   if (lines.length === 0) {
     return (
@@ -63,9 +65,43 @@ export default function CheckoutPage() {
 
       <form
         className="mt-12 grid gap-12 lg:grid-cols-12 lg:gap-16"
+        noValidate
         onSubmit={(e) => {
           e.preventDefault();
-          setSubmitted(true);
+          const form = e.currentTarget;
+          if (!form.checkValidity()) {
+            // Take the shopper straight to the first missing detail.
+            setError("Please complete the highlighted details.");
+            const first = form.querySelector<HTMLElement>(":invalid");
+            first?.scrollIntoView({ behavior: "smooth", block: "center" });
+            first?.focus({ preventScroll: true });
+            form.reportValidity();
+            return;
+          }
+          setError(null);
+          setPaying(true);
+          const data = new FormData(form);
+          const dateLabel = days.find((d) => d.value === data.get("date"))?.label ?? "";
+          const order = {
+            number: `CF-${10043 + Math.floor(Math.random() * 900)}`,
+            email: String(data.get("email") ?? ""),
+            name: String(data.get("name") ?? ""),
+            method,
+            when: `${dateLabel}, ${String(data.get("slot") ?? "")}`,
+            items: lines.map((l) => ({ title: l.title, subtitle: l.subtitle, qty: l.qty, unitCents: l.unitCents, photo: l.photo, specimen: l.line.kind === "specimen" })),
+            subtotalCents,
+            deliveryCents,
+            totalCents: total,
+          };
+          // Prototype stand-in for the HitPay redirect and webhook confirmation.
+          setTimeout(() => {
+            try {
+              sessionStorage.setItem("cf-last-order", JSON.stringify(order));
+            } catch {
+              /* storage unavailable: confirmation page shows a generic message */
+            }
+            router.push("/checkout/confirmation"); // the confirmation page empties the bag
+          }, 1400);
         }}
       >
         <div className="lg:col-span-7">
@@ -94,32 +130,32 @@ export default function CheckoutPage() {
               <div className="mb-5 grid gap-4 sm:grid-cols-3">
                 <div>
                   <label htmlFor="postal" className="label">Postal code</label>
-                  <input id="postal" required inputMode="numeric" pattern="[0-9]{6}" maxLength={6} className="field tabular" />
+                  <input id="postal" name="postal" required inputMode="numeric" pattern="[0-9]{6}" maxLength={6} title="A 6-digit Singapore postal code" className="field tabular" />
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="street" className="label">Block and street</label>
-                  <input id="street" required autoComplete="address-line1" className="field" placeholder="Filled in from your postal code" />
+                  <input id="street" name="street" required autoComplete="address-line1" className="field" placeholder="Filled in from your postal code" />
                 </div>
                 <div>
                   <label htmlFor="unit" className="label">Unit</label>
-                  <input id="unit" autoComplete="address-line2" className="field" placeholder="#12-345" />
+                  <input id="unit" name="unit" autoComplete="address-line2" className="field" placeholder="#12-345" />
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="building" className="label">Building name (optional)</label>
-                  <input id="building" className="field" />
+                  <input id="building" name="building" className="field" />
                 </div>
               </div>
             )}
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label htmlFor="date" className="label">Date</label>
-                <select id="date" required className="field">
+                <select id="date" name="date" required className="field">
                   {days.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}
                 </select>
               </div>
               <div>
                 <label htmlFor="slot" className="label">Time</label>
-                <select id="slot" required className="field">
+                <select id="slot" name="slot" required className="field">
                   {fulfilment.collectionSlots.map((s) => <option key={s}>{s}</option>)}
                 </select>
               </div>
@@ -131,18 +167,18 @@ export default function CheckoutPage() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
                 <label htmlFor="email" className="label">Email</label>
-                <input id="email" type="email" required autoComplete="email" className="field" />
+                <input id="email" name="email" type="email" required autoComplete="email" className="field" />
                 <p className="t-small mt-2 text-ink-2">We&rsquo;ll send your confirmation and updates here.</p>
               </div>
               <div>
                 <label htmlFor="name" className="label">Full name</label>
-                <input id="name" required autoComplete="name" className="field" />
+                <input id="name" name="name" required autoComplete="name" className="field" />
               </div>
               <div>
                 <label htmlFor="phone" className="label">Mobile number</label>
                 <div className="relative">
                   <span className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-[17px] text-ink-2">+65</span>
-                  <input id="phone" required inputMode="tel" autoComplete="tel-national" pattern="[689][0-9]{7}" className="field pl-14" />
+                  <input id="phone" name="phone" required inputMode="tel" autoComplete="tel-national" pattern="[689][0-9]{3}\s?[0-9]{4}" title="An 8-digit Singapore mobile or phone number, e.g. 8123 4567" placeholder="8123 4567" className="field pl-14" />
                 </div>
               </div>
             </div>
@@ -180,15 +216,19 @@ export default function CheckoutPage() {
               <div className="flex justify-between text-[13px] text-ink-2"><dt>GST</dt><dd>{policies.gstNote}</dd></div>
               <div className="flex justify-between border-t border-hairline pt-4 text-[21px] font-semibold tracking-[-0.02em]"><dt>Total</dt><dd className="tabular">{formatPrice(total)}</dd></div>
             </dl>
-            <button type="submit" className="btn btn-primary btn-lg mt-8 w-full" disabled={!canPay}>Pay {formatPrice(total)}</button>
+            <button type="submit" className="btn btn-primary btn-lg mt-8 w-full" disabled={paying} aria-live="polite">
+              {paying ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" /> Securing your order…
+                </>
+              ) : (
+                <>Pay {formatPrice(total)}</>
+              )}
+            </button>
+            {error && <p role="alert" className="t-small mt-3 text-center text-red-600">{error}</p>}
             <p className="t-small mt-4 flex items-start justify-center gap-1.5 text-center text-ink-2">
               <Lock className="mt-0.5 size-3.5 shrink-0" /> Pay securely with PayNow or card on HitPay. We never see your card details.
             </p>
-            {submitted && (
-              <p role="status" className="t-small mt-4 rounded-xl bg-white p-4 text-ink-2">
-                This is a prototype, so payment isn&rsquo;t connected. On the live site your items are held for 15 minutes while you pay on HitPay.
-              </p>
-            )}
           </div>
         </aside>
       </form>

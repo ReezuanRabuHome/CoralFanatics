@@ -10,9 +10,9 @@ import { SubNav } from "@/components/store/SubNav";
 import { fulfilment, policies } from "@/config/placeholders";
 
 export const sectionMeta: Record<Product["section"], { title: string; blurb: string; crumb: string }> = {
-  fish: { title: "Marine fish.", blurb: "Reef-suitable fish, chosen with care.", crumb: "Marine Fish" },
-  invertebrates: { title: "Invertebrates.", blurb: "Shrimp, snails, crabs and urchins. Your reef's clean-up crew.", crumb: "Invertebrates" },
-  equipment: { title: "Equipment.", blurb: "Lighting, pumps, salt and testing.", crumb: "Equipment" },
+  fish: { title: "Marine fish.", blurb: "Reef fish from beginner-friendly gobies to tangs.", crumb: "Marine Fish" },
+  invertebrates: { title: "Invertebrates.", blurb: "Hermit crabs, shrimp, snails and urchins for your clean-up crew.", crumb: "Invertebrates" },
+  equipment: { title: "Equipment.", blurb: "Skimmers, lighting, pumps, salt and testing.", crumb: "Equipment" },
   additives: { title: "Additives.", blurb: "Supplements and care products for stable parameters.", crumb: "Additives" },
 };
 
@@ -23,9 +23,14 @@ const siblings: Record<Product["section"], Product["section"][]> = {
   additives: ["equipment", "additives"],
 };
 
-export function ProductListingPage({ section }: { section: Product["section"] }) {
+export function ProductListingPage({ section, sub }: { section: Product["section"]; sub?: string }) {
   const meta = sectionMeta[section];
-  const items = products.filter((p) => p.section === section);
+  const all = products.filter((p) => p.section === section);
+  const subs = [...new Set(all.map((p) => p.subCategory))].sort();
+  const active = sub && subs.includes(sub) ? sub : undefined;
+  const items = active ? all.filter((p) => p.subCategory === active) : all;
+  const chip = (on: boolean) =>
+    `inline-flex h-9 items-center rounded-full px-4 text-[14px] whitespace-nowrap transition-colors ${on ? "bg-ink text-white" : "bg-white text-ink shadow-[0_1px_2px_rgb(0_0_0/0.06)] hover:bg-mist-2"}`;
   return (
     <div className="bg-mist">
       <div className="container-wide pt-24 pb-24 lg:pt-28">
@@ -33,12 +38,28 @@ export function ProductListingPage({ section }: { section: Product["section"] })
           <h1 className="t-section">{meta.title}</h1>
           <p className="t-sub mt-3 max-w-[46ch] text-ink-2">{meta.blurb}</p>
         </header>
-        <div className="mb-8 border-b border-hairline">
+        <div className="mb-6 border-b border-hairline">
           <SubNav current={sectionHref[section]} items={siblings[section].map((s) => ({ label: sectionMeta[s].crumb, href: sectionHref[s] }))} />
         </div>
-        <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-4">
-          {items.map((p) => <li key={p.slug}><ProductCard p={p} className="h-full" /></li>)}
-        </ul>
+        {subs.length > 1 && (
+          <nav aria-label="Filter by type" className="no-scrollbar -mx-5 mb-8 overflow-x-auto px-5 md:mx-0 md:px-0">
+            <ul className="flex gap-2">
+              <li><Link href={sectionHref[section]} scroll={false} aria-current={!active ? "page" : undefined} className={chip(!active)}>All</Link></li>
+              {subs.map((s) => (
+                <li key={s}>
+                  <Link href={`${sectionHref[section]}?sub=${encodeURIComponent(s)}`} scroll={false} aria-current={active === s ? "page" : undefined} className={chip(active === s)}>{s}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+        {items.length === 0 ? (
+          <p className="py-20 text-center text-ink-2">Nothing here at the moment. <Link href={sectionHref[section]} className="link">See everything</Link></p>
+        ) : (
+          <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-4">
+            {items.map((p) => <li key={p.slug}><ProductCard p={p} className="h-full" /></li>)}
+          </ul>
+        )}
       </div>
     </div>
   );
